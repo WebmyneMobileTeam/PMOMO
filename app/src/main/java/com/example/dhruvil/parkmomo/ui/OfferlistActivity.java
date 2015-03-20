@@ -19,6 +19,7 @@ import com.example.dhruvil.parkmomo.helpers.AppConstants;
 import com.example.dhruvil.parkmomo.helpers.CallWebService;
 import com.example.dhruvil.parkmomo.helpers.ComplexPreferences;
 import com.example.dhruvil.parkmomo.model.Offer;
+import com.google.gson.GsonBuilder;
 
 import android.util.Log;
 
@@ -75,6 +76,9 @@ public class OfferlistActivity extends ActionBarActivity {
                 @Override
                 public void response(String response) {
                     Log.e("offer list response",response);
+
+//                    Offer offerlist = new GsonBuilder().create().fromJson(response,Offer.class);
+
 
                     pd.dismiss();
                 }
