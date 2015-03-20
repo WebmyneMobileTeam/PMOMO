@@ -67,7 +67,6 @@ public class LauncherActivity extends ActionBarActivity implements View.OnClickL
                     Toast.makeText(LauncherActivity.this,"Enter Valid Information",Toast.LENGTH_SHORT).show();
                 }
 
-
                 break;
         }
 
