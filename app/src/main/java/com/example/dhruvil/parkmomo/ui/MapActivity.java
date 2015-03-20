@@ -1,10 +1,12 @@
 package com.example.dhruvil.parkmomo.ui;
 
+import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import com.example.dhruvil.parkmomo.R;
 import com.google.android.gms.common.ConnectionResult;
@@ -34,6 +36,7 @@ public class MapActivity extends ActionBarActivity implements GoogleApiClient.Co
         protected LocationRequest mLocationRequest;
         protected Location mCurrentLocation;
         protected String mLastUpdateTime;
+        TextView seeOfferes;
         GoogleMap map;
 
         private double myLatitude,myLongitude;
@@ -48,8 +51,18 @@ public class MapActivity extends ActionBarActivity implements GoogleApiClient.Co
                 // Get a handle to the Map Fragment
                 map= ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
 
+                seeOfferes = (TextView)findViewById(R.id.seeOfferes);
+
                 updateValuesFromBundle(savedInstanceState);
                 buildGoogleApiClient();
+
+            seeOfferes.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(MapActivity.this,OfferlistActivity.class);
+                    startActivity(i);
+                }
+            });
 
         }
 

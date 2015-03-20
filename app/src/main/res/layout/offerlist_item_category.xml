@@ -8,7 +8,7 @@ android:orientation="vertical"
 android:layout_width="match_parent"
 android:layout_height="wrap_content">
 
-<com.webmyne.tisco.custom_components.CircularImageView
+<com.example.dhruvil.parkmomo.custom_components.CircularImageView
     android:id="@+id/imgHomeProduct"
     android:layout_gravity="center"
     android:layout_width="100dp"

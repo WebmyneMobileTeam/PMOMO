@@ -41,7 +41,7 @@ public class OfferlistActivity extends ActionBarActivity {
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
-            toolbar.setTitle("TiSCO");
+            toolbar.setTitle("Offers");
 //            toolbar.setLogo(R.drawable.logo);
             setSupportActionBar(toolbar);
         }
