@@ -10,12 +10,15 @@ import java.util.ArrayList;
 public class ParkingList {
 
     @SerializedName("CampaignArtworks")
-    public ArrayList<CampaignArtworks> CampaignArtworks;
+    public CampaignArtworks CampaignArtworks;
+
+
+
 
     @SerializedName("CampaignDetails")
-    public ArrayList<CampaignDetails> CampaignDetails;
+    public CampaignDetails CampaignDetails;
 
     @SerializedName("CampaignLocations")
-    public ArrayList<CampaignLocations> CampaignLocations;
+    public CampaignLocations CampaignLocations;
 
 }
