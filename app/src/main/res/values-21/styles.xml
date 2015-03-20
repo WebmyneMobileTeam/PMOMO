@@ -3,7 +3,7 @@
 
     <style name="AppTheme" parent="AppTheme.Base">
         <item name="@android:colorPrimary">@color/primaryColor</item>
-        <item name="@android:colorPrimaryDark">@color/primaryColorDark</item>
+        <item name="@android:colorPrimaryDark">@color/primaryColor</item>
         <item name="@android:drawerArrowStyle">@style/DrawerArrowStyle</item>
         <item name="android:textColorPrimary">@android:color/white</item>
         <item name="@android:colorAccent">#ffffff</item>
