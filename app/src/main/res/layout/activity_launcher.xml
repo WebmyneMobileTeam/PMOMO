@@ -14,30 +14,41 @@
 
     <LinearLayout
         android:layout_alignParentBottom="true"
-        android:paddingLeft="48dp"
-        android:paddingRight="48dp"
+        android:paddingLeft="32dp"
+        android:paddingRight="32dp"
         android:gravity="center"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <EditText
+            android:textStyle="bold"
+            android:drawableRight="@drawable/ic_action_hardware_phone_iphone"
             android:id="@+id/edMobile"
-            android:textColorHint="@color/paylabas_grey"
-            android:textColor="@color/paylabas_dkgrey"
+            android:textColorHint="#d1d1d1"
+            android:textColor="#fff"
             android:hint="mobile"
-            android:padding="8dp"
+            android:paddingLeft="16dp"
+            android:paddingBottom="8dp"
+            android:paddingRight="16dp"
+            android:paddingTop="8dp"
             android:background="@drawable/ed_rounded"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
         <EditText
+            android:textStyle="bold"
+            android:drawableRight="@drawable/ic_action_action_https"
             android:id="@+id/edPassword"
             android:layout_marginTop="8dp"
-            android:textColorHint="@color/paylabas_grey"
-            android:textColor="@color/paylabas_dkgrey"
+            android:textColorHint="#d1d1d1"
+            android:paddingLeft="16dp"
+            android:paddingBottom="8dp"
+            android:paddingRight="16dp"
+            android:paddingTop="8dp"
+            android:textColor="#fff"
             android:hint="password"
-            android:padding="8dp"
+
             android:background="@drawable/ed_rounded"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
