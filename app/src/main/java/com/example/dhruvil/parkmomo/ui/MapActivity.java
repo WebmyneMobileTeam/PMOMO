@@ -1,4 +1,4 @@
-package com.example.dhruvil.parkmomo;
+package com.example.dhruvil.parkmomo.ui;
 
 import android.location.Location;
 import android.os.Bundle;
@@ -6,6 +6,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.View;
 
+import com.example.dhruvil.parkmomo.R;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;

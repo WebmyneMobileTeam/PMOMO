@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
 
-    tools:context="com.example.dhruvil.parkmomo.MapActivity">
+    tools:context="com.example.dhruvil.parkmomo.ui.MapActivity">
 
     <fragment
         android:id="@+id/map"

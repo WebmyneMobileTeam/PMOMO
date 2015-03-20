@@ -30,6 +30,7 @@
         android:layout_height="match_parent">
 
         <EditText
+            android:id="@+id/edMobile"
             android:textColorHint="@color/paylabas_grey"
             android:textColor="@color/paylabas_dkgrey"
             android:hint="mobile"
@@ -39,6 +40,7 @@
             android:layout_height="wrap_content" />
 
         <EditText
+            android:id="@+id/edPassword"
             android:layout_marginTop="8dp"
             android:textColorHint="@color/paylabas_grey"
             android:textColor="@color/paylabas_dkgrey"
