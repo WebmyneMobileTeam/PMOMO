@@ -1,5 +1,6 @@
 package com.example.dhruvil.parkmomo.ui;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -89,7 +90,6 @@ public class LauncherActivity extends ActionBarActivity implements View.OnClickL
             obj.put("UserRole",3);
 
         }catch(Exception e){
-
         }
 
         new APIClass(AppConstants.LOGIN, obj) {
@@ -98,6 +98,10 @@ public class LauncherActivity extends ActionBarActivity implements View.OnClickL
                 Log.e("Response Login", response);
                 User currentUser = new GsonBuilder().create().fromJson(response, User.class);
                 PrefUtils.setCurrentUser(currentUser,LauncherActivity.this);
+
+                Intent iMap = new Intent(LauncherActivity.this,MapActivity.class);
+                startActivity(iMap);
+
             }
             @Override
             public void error(String error) {
