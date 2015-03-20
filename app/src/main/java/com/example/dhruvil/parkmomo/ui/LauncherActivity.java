@@ -17,6 +17,7 @@ import com.example.dhruvil.parkmomo.helpers.APIClass;
 import com.example.dhruvil.parkmomo.helpers.AppConstants;
 import com.example.dhruvil.parkmomo.helpers.ComplexPreferences;
 import com.example.dhruvil.parkmomo.helpers.PrefUtils;
+import com.example.dhruvil.parkmomo.helpers.Prefs;
 import com.example.dhruvil.parkmomo.model.User;
 import com.google.gson.GsonBuilder;
 
@@ -34,6 +35,12 @@ public class LauncherActivity extends ActionBarActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launcher);
         init();
+
+        if(Prefs.with(LauncherActivity.this).getBoolean("isLogin",false)){
+            Intent intentMap = new Intent(LauncherActivity.this,MapActivity.class);
+            startActivity(intentMap);
+        }
+
     }
 
     private void init() {
@@ -98,7 +105,7 @@ public class LauncherActivity extends ActionBarActivity implements View.OnClickL
                 Log.e("Response Login", response);
                 User currentUser = new GsonBuilder().create().fromJson(response, User.class);
                 PrefUtils.setCurrentUser(currentUser,LauncherActivity.this);
-
+                Prefs.with(LauncherActivity.this).save("isLogin",true);
                 Intent iMap = new Intent(LauncherActivity.this,MapActivity.class);
                 startActivity(iMap);
 

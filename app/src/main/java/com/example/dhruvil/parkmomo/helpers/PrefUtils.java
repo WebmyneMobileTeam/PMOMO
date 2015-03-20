@@ -24,6 +24,7 @@ public class PrefUtils {
 
 
 
+
     public static void setCurrentUser(User user, Context ctx){
 
         ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(ctx, "user_pref", 0);
