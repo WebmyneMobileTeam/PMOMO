@@ -61,4 +61,22 @@
         <item>@color/green</item>
     </integer-array>
 
+    <declare-styleable name="CircularImageView">
+        <attr name="border" format="boolean"></attr>
+        <attr name="border_width" format="dimension"></attr>
+        <attr name="border_color" format="color"></attr>
+        <attr name="shadow" format="boolean"></attr>
+    </declare-styleable>
+
+    <declare-styleable name="Theme">
+        <attr name="circularImageViewStyle" format="reference"></attr>
+    </declare-styleable>
+
+
+    <declare-styleable name="CustomHeaderView">
+        <attr name="titleText" format="string" localization="suggested" />
+
+    </declare-styleable>
+
+
 </resources>

@@ -14,7 +14,7 @@
     <string name="normal">rnormal</string>
     <string name="light">rlight</string>
     <string name="title_activity_map">Map</string>
-
+    <string name="title_activity_offerList">Offer List</string>
 
 
 </resources>

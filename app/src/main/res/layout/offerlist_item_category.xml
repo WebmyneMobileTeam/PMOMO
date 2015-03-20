@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+android:padding="8dp"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+android:orientation="vertical"
+android:layout_width="match_parent"
+android:layout_height="wrap_content">
+
+<com.webmyne.tisco.custom_components.CircularImageView
+    android:id="@+id/imgHomeProduct"
+    android:layout_gravity="center"
+    android:layout_width="100dp"
+    android:layout_height="100dp"
+    app:border_color="#ddd"
+    app:border_width="4dp"
+    app:shadow="false"
+    android:scaleType="centerCrop"
+    android:src="@drawable/another"/>
+<LinearLayout
+    android:orientation="vertical"
+    android:layout_centerInParent="true"
+    android:layout_marginLeft="-20dp"
+    android:layout_toRightOf="@+id/imgHomeProduct"
+    android:background="@drawable/trans_bg"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+    <TextView
+
+        android:textStyle="bold"
+        android:id="@+id/txtNameHomeProduct"
+        android:paddingRight="20dp"
+        android:paddingLeft="40dp"
+        android:paddingTop="4dp"
+        android:singleLine="true"
+        android:text="Very Long Title Very Very Long"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <View
+        android:layout_marginTop="4dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="20dp"
+        android:id="@+id/vDottedLine"
+        android:background="@drawable/dotted"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layerType="software" />
+    <TextView
+
+        android:id="@+id/txtDetailHomeProduct"
+        android:paddingLeft="40dp"
+        android:paddingRight="20dp"
+        android:paddingTop="2dp"
+        android:maxLines="3"
+        android:text="There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour"
+        android:textColor="@android:color/white"
+        android:textSize="14sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</LinearLayout>
+
+</RelativeLayout>

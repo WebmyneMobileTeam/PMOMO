@@ -48,6 +48,12 @@
             android:label="@string/title_activity_map" >
 
         </activity>
+
+        <activity
+            android:name=".ui.OfferlistActivity"
+            android:label="@string/title_activity_map" >
+
+        </activity>
     </application>
 
 </manifest>
