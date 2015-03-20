@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -46,6 +47,7 @@ public class MapActivity extends ActionBarActivity implements GoogleMap.OnMapCli
         GoogleMap map;
         Marker marker;
         private EditText latitude,longitude;
+        private AutoCompleteTextView address;
 
 
 
@@ -58,6 +60,7 @@ public class MapActivity extends ActionBarActivity implements GoogleMap.OnMapCli
                 mLastUpdateTime = "";
                 latitude= (EditText) findViewById(R.id.latitude);
                 longitude= (EditText) findViewById(R.id.longitude);
+                address= (AutoCompleteTextView) findViewById(R.id.address);
                 // Get a handle to the Map Fragment
                 map= ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
                 map.setOnMapClickListener(this);
@@ -138,6 +141,7 @@ public class MapActivity extends ActionBarActivity implements GoogleMap.OnMapCli
                                         .title("YOU ARE HERE"));
                                 latitude.setText(mCurrentLocation.getLatitude()+"");
                                 longitude.setText(mCurrentLocation.getLongitude()+"");
+                                address.setText(getAddress(MapActivity.this,mCurrentLocation.getLatitude(),mCurrentLocation.getLongitude()));
                                 count++;
                         }
 
@@ -228,7 +232,7 @@ public class MapActivity extends ActionBarActivity implements GoogleMap.OnMapCli
                         .title("YOU ARE HERE"));
                 latitude.setText(latLng.latitude + "");
                 longitude.setText(latLng.longitude + "");
-
+                address.setText(getAddress(MapActivity.this,latLng.latitude,latLng.longitude));
 
         }
 

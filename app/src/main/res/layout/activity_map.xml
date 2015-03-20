@@ -63,8 +63,7 @@
             android:layout_height="wrap_content" />
 
 
-
-    <EditText
+    <AutoCompleteTextView
         android:textColorHint="#fff"
         android:layout_margin="10dp"
         android:background="#80494949"
@@ -76,6 +75,8 @@
         android:textSize="18sp"
         android:hint="Address"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        />
+
 
 </RelativeLayout>
