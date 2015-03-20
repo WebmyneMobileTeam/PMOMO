@@ -13,6 +13,8 @@
     <string name="bold">rbold</string>
     <string name="normal">rnormal</string>
     <string name="light">rlight</string>
+    <string name="title_activity_map">Map</string>
+
 
 
 </resources>
