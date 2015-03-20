@@ -1,5 +1,6 @@
 package com.example.dhruvil.parkmomo.ui;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -12,8 +13,14 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.android.volley.VolleyError;
 import com.example.dhruvil.parkmomo.R;
+import com.example.dhruvil.parkmomo.helpers.AppConstants;
+import com.example.dhruvil.parkmomo.helpers.CallWebService;
+import com.example.dhruvil.parkmomo.helpers.ComplexPreferences;
 import com.example.dhruvil.parkmomo.model.Offer;
+
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +28,7 @@ import java.util.List;
 
 public class OfferlistActivity extends ActionBarActivity {
     private Toolbar toolbar;
+    private ProgressDialog pd;
     private ListView listHomeProducts;
     private int icons[] = {R.drawable.logo, R.drawable.logo, R.drawable.logo,
             R.drawable.logo, R.drawable.logo, R.drawable.logo,
@@ -47,6 +55,44 @@ public class OfferlistActivity extends ActionBarActivity {
         }
 
     }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        proessFetchOfferList();
+    }
+
+
+    private void proessFetchOfferList(){
+        try{
+
+            pd = ProgressDialog.show(OfferlistActivity.this,"Please Wait","Loading..",true,false);
+            pd.show();
+
+            new CallWebService(AppConstants.OFFER_LIST +"51.569084"+"/-0.028106",CallWebService.TYPE_JSONOBJECT){
+
+                @Override
+                public void response(String response) {
+                    Log.e("offer list response",response);
+
+                    pd.dismiss();
+                }
+
+                @Override
+                public void error(VolleyError error) {
+                    Log.e("exc in volly",error.toString());
+                    pd.dismiss();
+                }
+            }.start();
+
+        }catch (Exception e1){
+            Log.e("exception", e1.toString());
+        }
+    }
+
+
+
     private void fillAndSet() {
 
         List<Offer> products = new ArrayList<>();

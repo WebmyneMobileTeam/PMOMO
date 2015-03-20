@@ -1,6 +1,7 @@
 package com.example.dhruvil.parkmomo.ui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -9,9 +10,11 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.dhruvil.parkmomo.R;
+import com.example.dhruvil.parkmomo.model.Offer;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -29,6 +32,7 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 
 public class MapActivity extends ActionBarActivity implements GoogleMap.OnMapClickListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener{
@@ -46,7 +50,7 @@ public class MapActivity extends ActionBarActivity implements GoogleMap.OnMapCli
         GoogleMap map;
         Marker marker;
         private EditText latitude,longitude;
-
+        private TextView seeOfferes;
 
 
         private int count=0;
@@ -63,14 +67,27 @@ public class MapActivity extends ActionBarActivity implements GoogleMap.OnMapCli
                 map.setOnMapClickListener(this);
                 map.getUiSettings().setCompassEnabled(true);
                 map.getUiSettings().setAllGesturesEnabled(true);
-        updateValuesFromBundle(savedInstanceState);
+
+                seeOfferes =  (TextView) findViewById(R.id.seeOfferes);
+                seeOfferes.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent i= new Intent(MapActivity.this, OfferlistActivity.class);
+                        startActivity(i);
+                    }
+                });
+
+
+
+
+                updateValuesFromBundle(savedInstanceState);
                 buildGoogleApiClient();
 
         }
 
 
 
-        private void updateValuesFromBundle(Bundle savedInstanceState) {
+    private void updateValuesFromBundle(Bundle savedInstanceState) {
                 Log.i(TAG, "Updating values from bundle");
                 if (savedInstanceState != null) {
 
