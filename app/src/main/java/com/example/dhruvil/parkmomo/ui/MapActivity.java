@@ -82,8 +82,6 @@ public class MapActivity extends ActionBarActivity implements GoogleMap.OnMapCli
                 });
 
 
-
-
                 updateValuesFromBundle(savedInstanceState);
                 buildGoogleApiClient();
 
