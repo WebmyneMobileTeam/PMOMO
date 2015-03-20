@@ -39,6 +39,10 @@ public class PrefUtils {
         return user;
     }
 
+    public static Typeface getTypeFace(Context ctx){
+        Typeface typeface = Typeface.createFromAsset(ctx.getAssets(), "candara.TTF");
+        return  typeface;
+    }
 
 
 

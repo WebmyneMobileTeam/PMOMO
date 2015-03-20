@@ -22,10 +22,10 @@ import java.util.List;
 public class OfferlistActivity extends ActionBarActivity {
     private Toolbar toolbar;
     private ListView listHomeProducts;
-    private int icons[] = {R.drawable.one, R.drawable.two, R.drawable.three,
-            R.drawable.four, R.drawable.five, R.drawable.six,
-            R.drawable.seven, R.drawable.eight, R.drawable.nine,
-            R.drawable.ten};
+    private int icons[] = {R.drawable.logo, R.drawable.logo, R.drawable.logo,
+            R.drawable.logo, R.drawable.logo, R.drawable.logo,
+            R.drawable.logo, R.drawable.logo, R.drawable.logo,
+            R.drawable.logo};
     private String names[] = {"Buffalo & Beafsdftg fdghgfhfgjhgjghjkjgkj", "See Food", "Lamb/Mutton", "Chicken & Duck", "Pork & Turkey", "Vegetables & Fruits",
             "Dairy Product", "Rabbit & Hen", "Eggs/Ovos", "Beverage"};
     private String sDescription[] = {"There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour"};

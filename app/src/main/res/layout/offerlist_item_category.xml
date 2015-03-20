@@ -16,7 +16,7 @@ android:layout_height="wrap_content">
     app:border_color="#ddd"
     app:border_width="4dp"
     app:shadow="false"
-    android:scaleType="centerCrop"
+    android:scaleType="fitCenter"
     android:src="@drawable/another"/>
 <LinearLayout
     android:orientation="vertical"

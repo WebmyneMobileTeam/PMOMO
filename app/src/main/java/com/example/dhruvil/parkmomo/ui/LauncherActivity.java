@@ -1,6 +1,8 @@
 package com.example.dhruvil.parkmomo.ui;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -29,6 +31,7 @@ public class LauncherActivity extends ActionBarActivity implements View.OnClickL
     private Button btnLogin;
     private EditText edMobile;
     private EditText edPassword;
+    private ProgressDialog pd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +42,7 @@ public class LauncherActivity extends ActionBarActivity implements View.OnClickL
         if(Prefs.with(LauncherActivity.this).getBoolean("isLogin",false)){
             Intent intentMap = new Intent(LauncherActivity.this,MapActivity.class);
             startActivity(intentMap);
+            finish();
         }
 
     }
@@ -51,6 +55,13 @@ public class LauncherActivity extends ActionBarActivity implements View.OnClickL
         btnLogin.setOnClickListener(this);
         edMobile.setText("9722973444");
         edPassword.setText("123456");
+
+
+        Typeface typeface = PrefUtils.getTypeFace(LauncherActivity.this);
+        btnLogin.setTypeface(typeface);
+        edMobile.setTypeface(typeface);
+        edPassword.setTypeface(typeface);
+
 
     }
 
@@ -87,6 +98,8 @@ public class LauncherActivity extends ActionBarActivity implements View.OnClickL
 
     private void processLogin() {
 
+        pd = ProgressDialog.show(LauncherActivity.this,"Please Wait","Loading..",true,false);
+
         JSONObject obj = null;
         try{
             obj = new JSONObject();
@@ -101,16 +114,21 @@ public class LauncherActivity extends ActionBarActivity implements View.OnClickL
         new APIClass(AppConstants.LOGIN, obj) {
             @Override
             public void response(String response) {
+
+                pd.dismiss();
+
                 Log.e("Response Login", response);
                 User currentUser = new GsonBuilder().create().fromJson(response, User.class);
                 PrefUtils.setCurrentUser(currentUser,LauncherActivity.this);
                 Prefs.with(LauncherActivity.this).save("isLogin",true);
                 Intent iMap = new Intent(LauncherActivity.this,MapActivity.class);
                 startActivity(iMap);
+                finish();
 
             }
             @Override
             public void error(String error) {
+                pd.dismiss();
                 Toast.makeText(LauncherActivity.this,error,Toast.LENGTH_SHORT).show();
             }
         }.call();
