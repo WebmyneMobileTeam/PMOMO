@@ -79,7 +79,6 @@ public class OfferlistActivity extends ActionBarActivity {
 
 //                    Offer offerlist = new GsonBuilder().create().fromJson(response,Offer.class);
 
-
                     pd.dismiss();
                 }
 
