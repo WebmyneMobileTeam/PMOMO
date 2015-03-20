@@ -1,12 +1,15 @@
 package com.example.dhruvil.parkmomo.ui;
 
-import android.content.Intent;
+import android.content.Context;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.dhruvil.parkmomo.R;
 import com.google.android.gms.common.ConnectionResult;
@@ -18,13 +21,17 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 
-public class MapActivity extends ActionBarActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener{
+public class MapActivity extends ActionBarActivity implements GoogleMap.OnMapClickListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener{
         protected static final String TAG = "location-updates-sample";
         public static final long UPDATE_INTERVAL_IN_MILLISECONDS = 100;
         public static final long FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS =
@@ -36,35 +43,32 @@ public class MapActivity extends ActionBarActivity implements GoogleApiClient.Co
         protected LocationRequest mLocationRequest;
         protected Location mCurrentLocation;
         protected String mLastUpdateTime;
-        TextView seeOfferes;
         GoogleMap map;
+        Marker marker;
+        private EditText latitude,longitude;
 
-        private double myLatitude,myLongitude;
+
 
         private int count=0;
 
         @Override
-        protected void onCreate(Bundle savedInstanceState) {
-                super.onCreate(savedInstanceState);
+        protected void onCreate(Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
                 setContentView(R.layout.activity_map);
                 mLastUpdateTime = "";
+                latitude= (EditText) findViewById(R.id.latitude);
+                longitude= (EditText) findViewById(R.id.longitude);
                 // Get a handle to the Map Fragment
                 map= ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
-
-                seeOfferes = (TextView)findViewById(R.id.seeOfferes);
-
-                updateValuesFromBundle(savedInstanceState);
+                map.setOnMapClickListener(this);
+                map.getUiSettings().setCompassEnabled(true);
+                map.getUiSettings().setAllGesturesEnabled(true);
+        updateValuesFromBundle(savedInstanceState);
                 buildGoogleApiClient();
 
-            seeOfferes.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent i = new Intent(MapActivity.this,OfferlistActivity.class);
-                    startActivity(i);
-                }
-            });
-
         }
+
+
 
         private void updateValuesFromBundle(Bundle savedInstanceState) {
                 Log.i(TAG, "Updating values from bundle");
@@ -125,19 +129,19 @@ public class MapActivity extends ActionBarActivity implements GoogleApiClient.Co
 
                                 map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLong, 10));
                                 map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-                                map.addMarker(new MarkerOptions()
+                                if(marker!=null){
+                                        marker.remove();
+                                }
+                                marker= map.addMarker(new MarkerOptions()
                                         .position(latLong)
                                         .draggable(true)
                                         .title("YOU ARE HERE"));
-
+                                latitude.setText(mCurrentLocation.getLatitude()+"");
+                                longitude.setText(mCurrentLocation.getLongitude()+"");
                                 count++;
                         }
 
 
-                        map.setMyLocationEnabled(true);
-                        map.getUiSettings().setZoomControlsEnabled(true);
-                        map.getUiSettings().setCompassEnabled(true);
-                        map.getUiSettings().setAllGesturesEnabled(true);
 
                 } catch (Exception e){
                         e.printStackTrace();
@@ -213,4 +217,64 @@ public class MapActivity extends ActionBarActivity implements GoogleApiClient.Co
         }
 
 
+        @Override
+        public void onMapClick(LatLng latLng) {
+                if(marker!=null){
+                        marker.remove();
+                }
+                marker= map.addMarker(new MarkerOptions()
+                        .position(latLng)
+                        .draggable(true)
+                        .title("YOU ARE HERE"));
+                latitude.setText(latLng.latitude + "");
+                longitude.setText(latLng.longitude + "");
+
+
+        }
+
+        public  String getAddress(Context ctx, double latitude, double longitude) {
+                StringBuilder result = new StringBuilder();
+                try {
+                        Geocoder geocoder = new Geocoder(ctx, Locale.getDefault());
+                        List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
+                        if (addresses.size() > 0) {
+                                Address address = addresses.get(0);
+                                String locality=address.getLocality();
+                                String city=address.getCountryName();
+                                String region_code=address.getCountryCode();
+                                String zipcode=address.getPostalCode();
+                                String street = address.getAddressLine(0);
+                                String street2 = address.getAddressLine(1);
+
+                                double lat =address.getLatitude();
+                                double lon= address.getLongitude();
+
+                                if(street !=null){
+                                        result.append(street+" ");
+                                }
+
+                                if(street2 != null){
+                                        result.append(street2+" ");
+                                }
+
+                                if(locality != null){
+                                        result.append(locality+" ");
+                                }
+
+
+                                if(city != null){
+                                        result.append(city+" "+ region_code+" ");
+                                }
+
+                                if(zipcode != null){
+                                        result.append(zipcode);
+                                }
+
+                        }
+                } catch (IOException e) {
+                        Log.e("tag", e.getMessage());
+                }
+
+                return result.toString();
+        }
 }

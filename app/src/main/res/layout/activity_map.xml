@@ -22,18 +22,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <EditText
+            android:singleLine="true"
             android:background="#80494949"
         android:textColorHint="#fff"
         android:padding="10dp"
         android:id="@+id/latitude"
         android:textColor="#fff"
         android:textSize="18sp"
-        android:hint="Longitude"
+        android:hint="Latitude"
             android:layout_weight="1"
         android:layout_width="0dp"
         android:layout_height="wrap_content" />
 
         <EditText
+            android:singleLine="true"
             android:background="#80494949"
             android:layout_marginLeft="8dp"
             android:textColorHint="#fff"
@@ -42,7 +44,7 @@
         android:textColor="#fff"
 
         android:textSize="18sp"
-        android:hint="Latitude"
+        android:hint="Longitude"
         android:layout_weight="1"
         android:layout_width="0dp"
         android:layout_height="wrap_content" />
