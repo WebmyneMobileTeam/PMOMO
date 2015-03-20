@@ -7,10 +7,11 @@
     tools:context=".LauncherActivity">
 
     <include layout="@layout/global_background"></include>
+
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/park_logo"/>
+        android:src="@drawable/park_logo" />
 
     <LinearLayout
         android:layout_alignParentBottom="true"
@@ -73,9 +74,6 @@
             android:id="@+id/pb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
-
-
-
 
 
     </LinearLayout>
