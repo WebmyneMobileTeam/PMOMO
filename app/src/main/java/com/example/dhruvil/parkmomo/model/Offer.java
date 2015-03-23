@@ -9,13 +9,6 @@ import java.util.ArrayList;
  */
 public class Offer {
 
-//this are the temporarory fields
-    public String name;
-    public String shortDetail;
-    public String description;
-    public int imgRes;
-// ends
-
     @SerializedName("Parkinglst")
     public ArrayList<ParkingList> Parkinglst;
 

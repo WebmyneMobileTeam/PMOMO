@@ -14,69 +14,95 @@
         android:layout_height="match_parent"/>
 
     <LinearLayout
-        android:layout_above="@+id/seeOfferes"
-        android:layout_margin="10dp"
+        android:layout_above="@+id/bottomView"
         android:orientation="horizontal"
-
-
+        android:layout_marginBottom="8dp"
+        android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <EditText
+            android:inputType="numberDecimal"
+            android:layout_marginRight="8dp"
             android:singleLine="true"
-            android:background="#80494949"
-        android:textColorHint="#fff"
-        android:padding="10dp"
-        android:id="@+id/latitude"
-        android:textColor="#fff"
-        android:textSize="18sp"
-        android:hint="Latitude"
+            android:background="@drawable/et_rounded_right"
+            android:textColorHint="#fff"
+            android:padding="8dp"
+            android:id="@+id/latitude"
+            android:textColor="#fff"
+            android:textSize="16sp"
+            android:hint="Latitude"
             android:layout_weight="1"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content" />
-
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+        <ImageView
+            android:id="@+id/go"
+            android:src="@drawable/park_btn"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
         <EditText
+            android:inputType="numberDecimal"
             android:singleLine="true"
-            android:background="#80494949"
+            android:background="@drawable/et_rounded_left"
             android:layout_marginLeft="8dp"
             android:textColorHint="#fff"
-        android:padding="10dp"
-        android:id="@+id/longitude"
-        android:textColor="#fff"
-
-        android:textSize="18sp"
-        android:hint="Longitude"
-        android:layout_weight="1"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content" />
-    </LinearLayout>
-        <TextView
-            android:layout_alignParentBottom="true"
-            android:background="@color/primaryColor"
-            android:gravity="center"
-            android:text="SEE OFFERS"
-            android:padding="10dp"
-            android:id="@+id/seeOfferes"
+            android:padding="8dp"
+            android:id="@+id/longitude"
             android:textColor="#fff"
-            android:textSize="18sp"
-
-            android:layout_width="match_parent"
+            android:textSize="16sp"
+            android:hint="Longitude"
+            android:layout_weight="1"
+            android:layout_width="0dp"
             android:layout_height="wrap_content" />
-
-
-    <AutoCompleteTextView
-        android:textColorHint="#fff"
-        android:layout_margin="10dp"
-        android:background="#80494949"
+    </LinearLayout>
+    <ImageView
+       android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/ic_view_offer"
+        android:gravity="center"
         android:padding="10dp"
-        android:gravity="top"
-        android:singleLine="true"
-        android:id="@+id/address"
+        android:id="@+id/seeOfferes"
         android:textColor="#fff"
         android:textSize="18sp"
-        android:hint="Address"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:id="@+id/bottomView"
+        android:background="#aa000000"
+        android:padding="8dp"
+        android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        />
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_location_car"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <AutoCompleteTextView
+            android:padding="8dp"
+            android:textColorHint="#fff"
+            android:gravity="top"
+
+            android:background="#00000000"
+
+            android:id="@+id/address"
+            android:textColor="#fff"
+            android:textSize="16sp"
+            android:hint="Address..."
+            android:maxLines="3"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            />
+
+    </LinearLayout>
+
 
 
 </RelativeLayout>

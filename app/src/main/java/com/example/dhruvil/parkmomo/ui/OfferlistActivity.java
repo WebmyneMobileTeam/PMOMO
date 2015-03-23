@@ -14,11 +14,14 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
+import com.bumptech.glide.Glide;
 import com.example.dhruvil.parkmomo.R;
 import com.example.dhruvil.parkmomo.helpers.AppConstants;
 import com.example.dhruvil.parkmomo.helpers.CallWebService;
 import com.example.dhruvil.parkmomo.helpers.ComplexPreferences;
+import com.example.dhruvil.parkmomo.helpers.PrefUtils;
 import com.example.dhruvil.parkmomo.model.Offer;
+import com.example.dhruvil.parkmomo.model.ParkingList;
 import com.google.gson.GsonBuilder;
 
 import android.util.Log;
@@ -31,21 +34,14 @@ public class OfferlistActivity extends ActionBarActivity {
     private Toolbar toolbar;
     private ProgressDialog pd;
     private ListView listHomeProducts;
-    private int icons[] = {R.drawable.logo, R.drawable.logo, R.drawable.logo,
-            R.drawable.logo, R.drawable.logo, R.drawable.logo,
-            R.drawable.logo, R.drawable.logo, R.drawable.logo,
-            R.drawable.logo};
-    private String names[] = {"Buffalo & Beafsdftg fdghgfhfgjhgjghjkjgkj", "See Food", "Lamb/Mutton", "Chicken & Duck", "Pork & Turkey", "Vegetables & Fruits",
-            "Dairy Product", "Rabbit & Hen", "Eggs/Ovos", "Beverage"};
-    private String sDescription[] = {"There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour"};
-
+    private ArrayList<ParkingList> parkingLists;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_offer_list);
         
         listHomeProducts = (ListView) findViewById(R.id.listHomeProducts);
-        fillAndSet();
+
         
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -54,67 +50,13 @@ public class OfferlistActivity extends ActionBarActivity {
 //            toolbar.setLogo(R.drawable.logo);
             setSupportActionBar(toolbar);
         }
-
-    }
-
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        proessFetchOfferList();
-    }
-
-
-    private void proessFetchOfferList(){
-        try{
-
-            pd = ProgressDialog.show(OfferlistActivity.this,"Please Wait","Loading..",true,false);
-            pd.show();
-
-            new CallWebService(AppConstants.OFFER_LIST +"51.569084"+"/-0.028106",CallWebService.TYPE_JSONOBJECT){
-
-                @Override
-                public void response(String response) {
-                    Log.e("offer list response",response);
-
-                 Offer offerlist = new GsonBuilder().create().fromJson(response,Offer.class);
-
-                    pd.dismiss();
-                }
-
-                @Override
-                public void error(VolleyError error) {
-                    Log.e("exc in volly",error.toString());
-                    pd.dismiss();
-                }
-            }.start();
-
-        }catch (Exception e1){
-            Log.e("exception", e1.toString());
-        }
-    }
-
-
-
-    private void fillAndSet() {
-
-        List<Offer> products = new ArrayList<>();
-
-        for (int i = 0; i < names.length; i++) {
-
-            Offer product = new Offer();
-            product.shortDetail = sDescription[0];
-            product.imgRes = icons[i];
-            product.name = names[i];
-      
-            products.add(product);
-
-        }
-        
-        MyAppAdapter adapter = new MyAppAdapter(products,OfferlistActivity.this);
+        parkingLists=PrefUtils.getOffers(OfferlistActivity.this).Parkinglst;
+        MyAppAdapter adapter = new MyAppAdapter(parkingLists,OfferlistActivity.this);
         listHomeProducts.setAdapter(adapter);
 
     }
+
+
 
 
     public class MyAppAdapter extends BaseAdapter {
@@ -125,17 +67,17 @@ public class OfferlistActivity extends ActionBarActivity {
             public TextView description;
         }
 
-        public List<Offer> apps;
+        public List<ParkingList> parkingList;
         public Context context;
 
-        private MyAppAdapter(List<Offer> apps, Context context) {
-            this.apps = apps;
+        private MyAppAdapter(List<ParkingList> apps, Context context) {
+            this.parkingList = apps;
             this.context = context;
         }
 
         @Override
         public int getCount() {
-            return apps.size();
+            return parkingList.size();
         }
 
         @Override
@@ -161,17 +103,19 @@ public class OfferlistActivity extends ActionBarActivity {
                 viewHolder.text = (TextView) rowView.findViewById(R.id.txtNameHomeProduct);
                 viewHolder.image = (ImageView) rowView.findViewById(R.id.imgHomeProduct);
                 viewHolder.description = (TextView) rowView.findViewById(R.id.txtDetailHomeProduct);
-                viewHolder.image.setScaleType(ImageView.ScaleType.FIT_XY);
+
                 rowView.setTag(viewHolder);
             } else {
                 viewHolder = (ViewHolder) convertView.getTag();
             }
-
-
-            Offer product = apps.get(position);
-            viewHolder.description.setText(product.shortDetail);
-            viewHolder.image.setImageResource(product.imgRes);
-            viewHolder.text.setText(product.name);
+            Log.e("image path",AppConstants.IMAGE_PATH + parkingList.get(position).CampaignArtworks.ImageArt+"");
+            viewHolder.text.setText(parkingList.get(position).CampaignDetails.CampaignTitle);
+            viewHolder.description.setText(parkingList.get(position).CampaignDetails.CampaignDescription);
+            Glide.with(OfferlistActivity.this)
+                    .load(AppConstants.IMAGE_PATH + parkingList.get(position).CampaignArtworks.ImageArt)
+                    .placeholder(R.drawable.logo)
+                    .centerCrop()
+                    .into(viewHolder.image);
 
             return rowView;
         }

@@ -1,7 +1,10 @@
 package com.example.dhruvil.parkmomo.ui;
 
 import android.annotation.TargetApi;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
@@ -18,11 +21,17 @@ import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.VolleyError;
 import com.example.dhruvil.parkmomo.R;
+import com.example.dhruvil.parkmomo.helpers.AppConstants;
+import com.example.dhruvil.parkmomo.helpers.CallWebService;
+import com.example.dhruvil.parkmomo.helpers.PrefUtils;
 import com.example.dhruvil.parkmomo.model.Offer;
+import com.example.dhruvil.parkmomo.model.ParkingList;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -34,6 +43,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.gson.GsonBuilder;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -53,7 +63,7 @@ import java.util.Locale;
 import java.util.Map;
 
 
-public class MapActivity extends ActionBarActivity implements GoogleMap.OnMapClickListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
+public class MapActivity extends ActionBarActivity implements GoogleMap.OnMapClickListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener ,AdapterView.OnItemClickListener {
         protected static final String TAG = "location-updates-sample";
         public static final long UPDATE_INTERVAL_IN_MILLISECONDS = 100;
         public static final long FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS =
@@ -65,19 +75,25 @@ public class MapActivity extends ActionBarActivity implements GoogleMap.OnMapCli
         protected LocationRequest mLocationRequest;
         protected Location mCurrentLocation;
         protected String mLastUpdateTime;
-        GoogleMap map;
-        Marker marker;
+        private GoogleMap map;
+        private Marker marker;
         private EditText latitude, longitude;
-        private TextView seeOfferes;
+        private ImageView seeOfferes;
         private AutoCompleteTextView address;
+        private static final String TYPE_DETAILS = "/details";
+
+        private static final String LOG_TAG = "ExampleApp";
         private static final String PLACES_API_BASE = "https://maps.googleapis.com/maps/api/place";
         private static final String TYPE_AUTOCOMPLETE = "/autocomplete";
-        private static final String TYPE_DETAILS = "/details";
         private static final String OUT_JSON = "/json";
-        private static final String API_KEY = "AIzaSyCVw1OuoN7tuNzHW70M4pfPEF4_F_oeBPo";
+        private static final String API_KEY = "AIzaSyDvjQXvOtUvDwp7ajyRUSMPjtU0lUdQcqc";
+
+        private ImageView go;
         private ArrayList<String> place_ids;
         private LatLng latLng;
         private int count = 0;
+        private ProgressDialog pd;
+        private ArrayList<ParkingList> parkingLists;
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
@@ -88,56 +104,46 @@ public class MapActivity extends ActionBarActivity implements GoogleMap.OnMapCli
                 longitude = (EditText) findViewById(R.id.longitude);
                 address = (AutoCompleteTextView) findViewById(R.id.address);
                 address.setAdapter(new PlacesAutoCompleteAdapter(MapActivity.this, R.layout.auto_complete_item));
-                address.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                        @TargetApi(Build.VERSION_CODES.CUPCAKE)
+                address.setOnItemClickListener(this);
+                go= (ImageView) findViewById(R.id.go);
+                go.setOnClickListener(new View.OnClickListener() {
                         @Override
-                        public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-
-
-                                new AsyncTask<Void, Void, Void>() {
-
-                                        @Override
-                                        protected Void doInBackground(Void... voids) {
-
-                                                latLng = getLatLng(place_ids.get(position));
-
-                                                return null;
+                        public void onClick(View v) {
+                                if(isEmptyField(latitude)){
+                                        Toast.makeText(MapActivity.this,"Please Enter Latitude",Toast.LENGTH_LONG).show();
+                                } else if(isEmptyField(longitude)){
+                                        Toast.makeText(MapActivity.this,"Please Enter Longitude",Toast.LENGTH_LONG).show();
+                                } else {
+                                        LatLng latLngValue=new LatLng(Double.parseDouble(latitude.getText().toString().trim()),Double.parseDouble(longitude.getText().toString().trim()));
+                                        if (marker != null) {
+                                                marker.remove();
                                         }
-
-                                        @Override
-                                        protected void onPostExecute(Void aVoid) {
-                                                super.onPostExecute(aVoid);
-
-                                                //  Toast.makeText(getActivity(),ll.latitude+"    :   "+ll.longitude, Toast.LENGTH_SHORT).show();
-
-                                                if (marker != null) {
-                                                        marker.remove();
-                                                }
-                                                marker = map.addMarker(new MarkerOptions()
-                                                        .position(latLng)
-                                                        .draggable(true)
-                                                        .title("YOU ARE HERE"));
-                                                latitude.setText(mCurrentLocation.getLatitude() + "");
-                                                longitude.setText(mCurrentLocation.getLongitude() + "");
+                                        marker = map.addMarker(new MarkerOptions()
+                                                .position(latLngValue)
+                                                .draggable(true)
+                                                .title("YOU ARE HERE"));
+                                        latitude.setText(latLngValue.latitude + "");
+                                        longitude.setText(latLngValue.longitude + "");
+                                        address.setText(getAddress(MapActivity.this, latLngValue.latitude, latLngValue.longitude));
+                                        map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngValue, 10));
+                                }
 
 
-                                        }
-                                }.execute();
                         }
                 });
-
                 // Get a handle to the Map Fragment
                 map = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
                 map.setOnMapClickListener(this);
                 map.getUiSettings().setCompassEnabled(true);
                 map.getUiSettings().setAllGesturesEnabled(true);
 
-                seeOfferes = (TextView) findViewById(R.id.seeOfferes);
+                seeOfferes = (ImageView) findViewById(R.id.seeOfferes);
                 seeOfferes.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                                Intent i = new Intent(MapActivity.this, OfferlistActivity.class);
-                                startActivity(i);
+
+                                proessFetchOfferList();
+
                         }
                 });
 
@@ -145,6 +151,41 @@ public class MapActivity extends ActionBarActivity implements GoogleMap.OnMapCli
                 updateValuesFromBundle(savedInstanceState);
                 buildGoogleApiClient();
 
+        }
+
+        public void onItemClick(AdapterView<?> adapterView, View view, final int position, long id) {
+                String str = (String) adapterView.getItemAtPosition(position);
+//                Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
+                new AsyncTask<Void, Void, Void>() {
+
+                        @Override
+                        protected Void doInBackground(Void... voids) {
+
+                                latLng = getLatLng(place_ids.get(position));
+
+                                return null;
+                        }
+
+                        @Override
+                        protected void onPostExecute(Void aVoid) {
+                                super.onPostExecute(aVoid);
+
+                                //  Toast.makeText(getActivity(),ll.latitude+"    :   "+ll.longitude, Toast.LENGTH_SHORT).show();
+
+                                if (marker != null) {
+                                        marker.remove();
+                                }
+                                marker = map.addMarker(new MarkerOptions()
+                                        .position(latLng)
+                                        .draggable(true)
+                                        .title("YOU ARE HERE"));
+                                latitude.setText(latLng.latitude + "");
+                                longitude.setText(latLng.longitude + "");
+                                map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
+
+
+                        }
+                }.execute();
         }
 
 
@@ -308,7 +349,7 @@ public class MapActivity extends ActionBarActivity implements GoogleMap.OnMapCli
                 latitude.setText(latLng.latitude + "");
                 longitude.setText(latLng.longitude + "");
                 address.setText(getAddress(MapActivity.this, latLng.latitude, latLng.longitude));
-
+                map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
         }
 
         public String getAddress(Context ctx, double latitude, double longitude) {
@@ -356,10 +397,10 @@ public class MapActivity extends ActionBarActivity implements GoogleMap.OnMapCli
 
                 return result.toString();
         }
+
+
         private class PlacesAutoCompleteAdapter extends ArrayAdapter<String> implements Filterable {
-
                 private ArrayList<String> resultList;
-
 
                 public PlacesAutoCompleteAdapter(Context context, int textViewResourceId) {
                         super(context, textViewResourceId);
@@ -377,10 +418,9 @@ public class MapActivity extends ActionBarActivity implements GoogleMap.OnMapCli
 
                 @Override
                 public Filter getFilter() {
-
                         Filter filter = new Filter() {
                                 @Override
-                                protected android.widget.Filter.FilterResults performFiltering(CharSequence constraint) {
+                                protected FilterResults performFiltering(CharSequence constraint) {
                                         FilterResults filterResults = new FilterResults();
                                         if (constraint != null) {
                                                 // Retrieve the autocomplete results.
@@ -407,18 +447,16 @@ public class MapActivity extends ActionBarActivity implements GoogleMap.OnMapCli
         }
 
         private ArrayList<String> autocomplete(String input) {
-
-
                 ArrayList<String> resultList = null;
+
                 HttpURLConnection conn = null;
                 StringBuilder jsonResults = new StringBuilder();
                 try {
                         StringBuilder sb = new StringBuilder(PLACES_API_BASE + TYPE_AUTOCOMPLETE + OUT_JSON);
                         sb.append("?key=" + API_KEY);
-                        sb.append("&components=country:in");
+//                        sb.append("&components=country:uk");
                         sb.append("&input=" + URLEncoder.encode(input, "utf8"));
 
-//            Log.e("Log Url PlaceAPI",sb.toString());
                         URL url = new URL(sb.toString());
                         conn = (HttpURLConnection) url.openConnection();
                         InputStreamReader in = new InputStreamReader(conn.getInputStream());
@@ -430,10 +468,10 @@ public class MapActivity extends ActionBarActivity implements GoogleMap.OnMapCli
                                 jsonResults.append(buff, 0, read);
                         }
                 } catch (MalformedURLException e) {
-                        Log.e("error", "Error processing Places API URL", e);
+                        Log.e(LOG_TAG, "Error processing Places API URL", e);
                         return resultList;
                 } catch (IOException e) {
-                        Log.e("error", "Error connecting to Places API", e);
+                        Log.e(LOG_TAG, "Error connecting to Places API", e);
                         return resultList;
                 } finally {
                         if (conn != null) {
@@ -445,17 +483,15 @@ public class MapActivity extends ActionBarActivity implements GoogleMap.OnMapCli
                         // Create a JSON object hierarchy from the results
                         JSONObject jsonObj = new JSONObject(jsonResults.toString());
                         JSONArray predsJsonArray = jsonObj.getJSONArray("predictions");
-
+                        place_ids = new ArrayList<String>(predsJsonArray.length());
                         // Extract the Place descriptions from the results
                         resultList = new ArrayList<String>(predsJsonArray.length());
-                        place_ids = new ArrayList<String>(predsJsonArray.length());
-
                         for (int i = 0; i < predsJsonArray.length(); i++) {
                                 resultList.add(predsJsonArray.getJSONObject(i).getString("description"));
                                 place_ids.add(predsJsonArray.getJSONObject(i).getString("place_id"));
                         }
                 } catch (JSONException e) {
-                        Log.e("error", "Cannot process JSON results", e);
+                        Log.e(LOG_TAG, "Cannot process JSON results", e);
                 }
 
                 return resultList;
@@ -513,6 +549,90 @@ public class MapActivity extends ActionBarActivity implements GoogleMap.OnMapCli
 
                 return  latLng;
 
+        }
+
+        public boolean isEmptyField(EditText param1) {
+
+                boolean isEmpty = false;
+                if (param1.getText() == null || param1.getText().toString().equalsIgnoreCase("")) {
+                        isEmpty = true;
+                }
+                return isEmpty;
+        }
+
+
+        private void proessFetchOfferList(){
+                try{
+
+                        pd = ProgressDialog.show(MapActivity.this, "Please Wait", "Loading..", true, false);
+                        pd.show();
+
+                        new CallWebService(AppConstants.OFFER_LIST +"51.569084"+"/-0.028106",CallWebService.TYPE_JSONOBJECT){
+
+                                @Override
+                                public void response(String response) {
+                                        Log.e("offer list response",response);
+
+                                        Offer offerlist = new GsonBuilder().create().fromJson(response,Offer.class);
+                                        parkingLists=offerlist.Parkinglst;
+
+                                        if(parkingLists.size()==0){
+                                                AlertDialog.Builder builder = new AlertDialog.Builder(MapActivity.this);
+
+                                                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                                        public void onClick(DialogInterface dialog, int id) {
+                                                                dialog.dismiss();
+                                                        }
+                                                });
+                                                AlertDialog dialog = builder.create();
+                                                dialog.setMessage("There is no sponsered parking around you.");
+                                                dialog.show();
+                                        } else {
+                                                PrefUtils.setOffers(offerlist,MapActivity.this);
+                                                AlertDialog.Builder builder = new AlertDialog.Builder(MapActivity.this);
+
+                                                builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                                                        public void onClick(DialogInterface dialog, int id) {
+                                                                dialog.dismiss();
+
+                                                                Intent i=new Intent(MapActivity.this,OfferlistActivity.class);
+                                                                startActivity(i);
+                                                        }
+                                                });
+                                                builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                                                        public void onClick(DialogInterface dialog, int id) {
+                                                                dialog.dismiss();
+                                                                AlertDialog.Builder builder = new AlertDialog.Builder(MapActivity.this);
+
+                                                                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                                                        public void onClick(DialogInterface dialog, int id) {
+                                                                                dialog.dismiss();
+                                                                        }
+                                                                });
+                                                                AlertDialog dialogNew = builder.create();
+                                                                dialogNew.setMessage("Thank you.");
+                                                                dialogNew.show();
+
+                                                        }
+                                                });
+
+                                                AlertDialog dialog = builder.create();
+                                                dialog.setMessage("Would you like to use sponsered parking ?");
+                                                dialog.show();
+                                        }
+                                        pd.dismiss();
+                                }
+
+                                @Override
+                                public void error(VolleyError error) {
+                                        Log.e("exc in volly",error.toString());
+                                        pd.dismiss();
+                                }
+                        }.start();
+
+                }catch (Exception e1){
+                        Log.e("exception", e1.toString());
+                }
         }
 
 }
