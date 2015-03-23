@@ -22,6 +22,7 @@
         android:layout_height="wrap_content">
         <EditText
             android:inputType="numberDecimal"
+            android:digits="-1234567890."
             android:layout_marginRight="8dp"
             android:singleLine="true"
             android:background="@drawable/et_rounded_right"
@@ -42,6 +43,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <EditText
+            android:digits="-1234567890."
             android:inputType="numberDecimal"
             android:singleLine="true"
             android:background="@drawable/et_rounded_left"

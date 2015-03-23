@@ -141,8 +141,13 @@ public class MapActivity extends ActionBarActivity implements GoogleMap.OnMapCli
                 seeOfferes.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-
-                                proessFetchOfferList();
+                                if(isEmptyField(latitude)){
+                                        Toast.makeText(MapActivity.this,"Please Enter Latitude",Toast.LENGTH_LONG).show();
+                                } else if(isEmptyField(longitude)){
+                                        Toast.makeText(MapActivity.this,"Please Enter Longitude",Toast.LENGTH_LONG).show();
+                                } else {
+                                        proessFetchOfferList(latitude.getText().toString(),longitude.getText().toString());
+                                }
 
                         }
                 });
@@ -561,13 +566,13 @@ public class MapActivity extends ActionBarActivity implements GoogleMap.OnMapCli
         }
 
 
-        private void proessFetchOfferList(){
+        private void proessFetchOfferList(String latitudeValue,String longitudeValue){
                 try{
 
                         pd = ProgressDialog.show(MapActivity.this, "Please Wait", "Loading..", true, false);
                         pd.show();
 
-                        new CallWebService(AppConstants.OFFER_LIST +"51.569084"+"/-0.028106",CallWebService.TYPE_JSONOBJECT){
+                        new CallWebService(AppConstants.OFFER_LIST +latitudeValue+"/"+longitudeValue,CallWebService.TYPE_JSONOBJECT){
 
                                 @Override
                                 public void response(String response) {
@@ -575,51 +580,52 @@ public class MapActivity extends ActionBarActivity implements GoogleMap.OnMapCli
 
                                         Offer offerlist = new GsonBuilder().create().fromJson(response,Offer.class);
                                         parkingLists=offerlist.Parkinglst;
+                                        if(parkingLists ==null || parkingLists.isEmpty()) {
 
-                                        if(parkingLists.size()==0){
-                                                AlertDialog.Builder builder = new AlertDialog.Builder(MapActivity.this);
+                                                        AlertDialog.Builder builder = new AlertDialog.Builder(MapActivity.this);
 
-                                                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                                        public void onClick(DialogInterface dialog, int id) {
-                                                                dialog.dismiss();
-                                                        }
-                                                });
-                                                AlertDialog dialog = builder.create();
-                                                dialog.setMessage("There is no sponsered parking around you.");
-                                                dialog.show();
-                                        } else {
-                                                PrefUtils.setOffers(offerlist,MapActivity.this);
-                                                AlertDialog.Builder builder = new AlertDialog.Builder(MapActivity.this);
+                                                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                                                public void onClick(DialogInterface dialog, int id) {
+                                                                        dialog.dismiss();
+                                                                }
+                                                        });
+                                                        AlertDialog dialog = builder.create();
+                                                        dialog.setMessage("There is no sponsered parking around you.");
+                                                        dialog.show();
+                                                } else {
+                                                        PrefUtils.setOffers(offerlist, MapActivity.this);
+                                                        AlertDialog.Builder builder = new AlertDialog.Builder(MapActivity.this);
 
-                                                builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
-                                                        public void onClick(DialogInterface dialog, int id) {
-                                                                dialog.dismiss();
+                                                        builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                                                                public void onClick(DialogInterface dialog, int id) {
+                                                                        dialog.dismiss();
 
-                                                                Intent i=new Intent(MapActivity.this,OfferlistActivity.class);
-                                                                startActivity(i);
-                                                        }
-                                                });
-                                                builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
-                                                        public void onClick(DialogInterface dialog, int id) {
-                                                                dialog.dismiss();
-                                                                AlertDialog.Builder builder = new AlertDialog.Builder(MapActivity.this);
+                                                                        Intent i = new Intent(MapActivity.this, OfferlistActivity.class);
+                                                                        startActivity(i);
+                                                                }
+                                                        });
+                                                        builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                                                                public void onClick(DialogInterface dialog, int id) {
+                                                                        dialog.dismiss();
+                                                                        AlertDialog.Builder builder = new AlertDialog.Builder(MapActivity.this);
 
-                                                                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                                                        public void onClick(DialogInterface dialog, int id) {
-                                                                                dialog.dismiss();
-                                                                        }
-                                                                });
-                                                                AlertDialog dialogNew = builder.create();
-                                                                dialogNew.setMessage("Thank you.");
-                                                                dialogNew.show();
+                                                                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                                                                public void onClick(DialogInterface dialog, int id) {
+                                                                                        dialog.dismiss();
+                                                                                }
+                                                                        });
+                                                                        AlertDialog dialogNew = builder.create();
+                                                                        dialogNew.setMessage("Thank you, for using our application");
+                                                                        dialogNew.show();
 
-                                                        }
-                                                });
+                                                                }
+                                                        });
 
-                                                AlertDialog dialog = builder.create();
-                                                dialog.setMessage("Would you like to use sponsered parking ?");
-                                                dialog.show();
-                                        }
+                                                        AlertDialog dialog = builder.create();
+                                                        dialog.setMessage("Would you like to use sponsered parking ?");
+                                                        dialog.show();
+                                                }
+
                                         pd.dismiss();
                                 }
 
