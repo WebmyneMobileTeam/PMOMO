@@ -31,7 +31,7 @@ public class OfferDetailActivity extends ActionBarActivity {
                 startActivity(i);
             }
         });
-        new CountDownTimer(30000000, 1000) {
+        new CountDownTimer(3600000, 1000) {
 
             public void onTick(long millisUntilFinished) {
                 txtSecond.setText(String.format("%02d", ((millisUntilFinished/1000) % 60)));
