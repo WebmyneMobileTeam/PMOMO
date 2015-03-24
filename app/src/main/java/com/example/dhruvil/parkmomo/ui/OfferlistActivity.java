@@ -2,6 +2,7 @@ package com.example.dhruvil.parkmomo.ui;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
@@ -95,7 +96,9 @@ public class OfferlistActivity extends ActionBarActivity {
 
             View rowView = convertView;
             ViewHolder viewHolder;
+
             if (rowView == null) {
+
                 LayoutInflater inflater = getLayoutInflater();
                 rowView = inflater.inflate(R.layout.offerlist_item_category, null);
                 // configure view holder
@@ -105,9 +108,11 @@ public class OfferlistActivity extends ActionBarActivity {
                 viewHolder.description = (TextView) rowView.findViewById(R.id.txtDetailHomeProduct);
 
                 rowView.setTag(viewHolder);
+
             } else {
                 viewHolder = (ViewHolder) convertView.getTag();
             }
+
             Log.e("image path",AppConstants.IMAGE_PATH + parkingList.get(position).CampaignArtworks.ImageArt+"");
             viewHolder.text.setText(parkingList.get(position).CampaignDetails.CampaignTitle);
             viewHolder.description.setText(parkingList.get(position).CampaignDetails.CampaignDescription);
@@ -116,10 +121,16 @@ public class OfferlistActivity extends ActionBarActivity {
                     .placeholder(R.drawable.logo)
                     .centerCrop()
                     .into(viewHolder.image);
+            rowView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(OfferlistActivity.this, OfferDetailActivity.class);
+                    startActivity(i);
+                }
+            });
 
             return rowView;
         }
     }
-
 
 }

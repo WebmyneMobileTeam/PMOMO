@@ -1,0 +1,124 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/dark_background"
+    tools:context="com.example.dhruvil.parkmomo.ui.OfferDetailActivity">
+
+
+    <LinearLayout
+        android:layout_marginTop="16dp"
+        android:padding="8dp"
+        android:orientation="vertical"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/txtHour"
+                android:textSize="52sp"
+                android:textColor="#aaffffff"
+                android:text="00"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+                <TextView
+
+                    android:textSize="12sp"
+                    android:textColor="#aaffffff"
+                    android:text="hours"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+            <TextView
+                android:layout_gravity="top"
+                android:gravity="top"
+                android:textSize="52sp"
+                android:textColor="#aaffffff"
+                android:text=":"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+            <LinearLayout
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/txtMinute"
+                    android:textSize="52sp"
+                    android:textColor="#aaffffff"
+                    android:text="00"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+
+                    android:textSize="12sp"
+                    android:textColor="#aaffffff"
+                    android:text="minutes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+            <TextView
+                android:layout_gravity="top"
+                android:gravity="top"
+                android:textSize="52sp"
+                android:textColor="#aaffffff"
+                android:text=":"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+            <LinearLayout
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/txtSecond"
+                    android:textSize="52sp"
+                    android:textColor="#aaffffff"
+                    android:text="00"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+
+                    android:textSize="12sp"
+                    android:textColor="#aaffffff"
+                    android:text="seconds"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/verify"
+        android:layout_marginBottom="16dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:src="@drawable/park_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</RelativeLayout>
