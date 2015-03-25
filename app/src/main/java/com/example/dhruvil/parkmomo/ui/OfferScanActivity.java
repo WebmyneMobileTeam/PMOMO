@@ -9,10 +9,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.dhruvil.parkmomo.R;
 import com.example.dhruvil.parkmomo.custom_components.CameraPreview;
+import com.example.dhruvil.parkmomo.helpers.PrefUtils;
+import com.example.dhruvil.parkmomo.model.ParkingList;
 import com.google.android.gms.ads.AdView;
 
 import net.sourceforge.zbar.Config;
@@ -25,11 +28,11 @@ public class OfferScanActivity extends ActionBarActivity {
     private Camera mCamera;
     private CameraPreview mPreview;
     private Handler autoFocusHandler;
-
+    private TextView tapText;
     ImageScanner scanner;
     private boolean barcodeScanned = false;
     private boolean previewing = true;
-
+    private ParkingList parkingList;
     static {
         System.loadLibrary("iconv");
     }
@@ -37,6 +40,10 @@ public class OfferScanActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_offer_scan);
+        parkingList= PrefUtils.getSingleOffer(OfferScanActivity.this);
+//        parkingList.CampaignLocations.
+        tapText= (TextView) findViewById(R.id.tapText);
+        tapText.setVisibility(View.GONE);
     }
 
     public void onPause() {
@@ -88,6 +95,8 @@ public class OfferScanActivity extends ActionBarActivity {
 
                 SymbolSet syms = scanner.getResults();
                 for (Symbol sym : syms) {
+                    tapText.setVisibility(View.VISIBLE);
+
                     Toast.makeText(OfferScanActivity.this,sym.getData().toString()+" ",Toast.LENGTH_LONG).show();
 
                     barcodeScanned = true;
@@ -119,7 +128,9 @@ public class OfferScanActivity extends ActionBarActivity {
         mPreview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 if (barcodeScanned) {
+                    tapText.setVisibility(View.GONE);
                     barcodeScanned = false;
 
                     mCamera.setPreviewCallback(previewCb);

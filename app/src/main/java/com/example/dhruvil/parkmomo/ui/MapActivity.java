@@ -580,53 +580,15 @@ public class MapActivity extends ActionBarActivity implements GoogleMap.OnMapCli
 
                                         Offer offerlist = new GsonBuilder().create().fromJson(response,Offer.class);
                                         parkingLists=offerlist.Parkinglst;
-                                        if(parkingLists ==null || parkingLists.isEmpty()) {
-
-                                                        AlertDialog.Builder builder = new AlertDialog.Builder(MapActivity.this);
-
-                                                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                                                public void onClick(DialogInterface dialog, int id) {
-                                                                        dialog.dismiss();
-                                                                }
-                                                        });
-                                                        AlertDialog dialog = builder.create();
-                                                        dialog.setMessage("There is no sponsered parking around you.");
-                                                        dialog.show();
-                                                } else {
-                                                        PrefUtils.setOffers(offerlist, MapActivity.this);
-                                                        AlertDialog.Builder builder = new AlertDialog.Builder(MapActivity.this);
-
-                                                        builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
-                                                                public void onClick(DialogInterface dialog, int id) {
-                                                                        dialog.dismiss();
-
-                                                                        Intent i = new Intent(MapActivity.this, OfferlistActivity.class);
-                                                                        startActivity(i);
-                                                                }
-                                                        });
-                                                        builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
-                                                                public void onClick(DialogInterface dialog, int id) {
-                                                                        dialog.dismiss();
-                                                                        AlertDialog.Builder builder = new AlertDialog.Builder(MapActivity.this);
-
-                                                                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                                                                public void onClick(DialogInterface dialog, int id) {
-                                                                                        dialog.dismiss();
-                                                                                }
-                                                                        });
-                                                                        AlertDialog dialogNew = builder.create();
-                                                                        dialogNew.setMessage("Thank you, for using our application");
-                                                                        dialogNew.show();
-
-                                                                }
-                                                        });
-
-                                                        AlertDialog dialog = builder.create();
-                                                        dialog.setMessage("Would you like to use sponsered parking ?");
-                                                        dialog.show();
-                                                }
-
                                         pd.dismiss();
+                                        PrefUtils.setOffers(offerlist, MapActivity.this);
+                                        Intent i = new Intent(MapActivity.this, ConfirmActivity.class);
+                                        startActivity(i);
+
+
+
+
+
                                 }
 
                                 @Override

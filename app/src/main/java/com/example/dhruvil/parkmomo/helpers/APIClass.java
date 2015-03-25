@@ -50,7 +50,7 @@ public abstract class APIClass implements IService2 {
                         error(jobj.getString("ResponseMsg"));
                     }
                 }catch(Exception e){
-
+                    e.printStackTrace();
                 }
 
 
@@ -60,16 +60,11 @@ public abstract class APIClass implements IService2 {
             @Override
             public void onErrorResponse(VolleyError error) {
                         error(error.getMessage());
-
             }
         });
 
         req.setRetryPolicy(new DefaultRetryPolicy(5000,0,0));
         MyApplication.getInstance().addToRequestQueue(req);
-
-
     }
-
-
 }
 

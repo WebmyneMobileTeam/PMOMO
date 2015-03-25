@@ -17,6 +17,7 @@
     <string name="title_activity_offerList">Offer List</string>
     <string name="title_activity_offer_detail">OfferDetailActivity</string>
     <string name="title_activity_offer_scan">OfferScanActivity</string>
+    <string name="title_activity_confirm">ConfirmActivity</string>
 
 
 </resources>

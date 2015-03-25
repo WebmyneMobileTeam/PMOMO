@@ -14,8 +14,8 @@
     <!-- Required to show current location -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-
     <uses-permission android:name="android.permission.CAMERA" />
+
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
@@ -63,6 +63,10 @@
         <activity
             android:name=".ui.OfferScanActivity"
             android:label="@string/title_activity_offer_scan" >
+        </activity>
+        <activity
+            android:name=".ui.ConfirmActivity"
+            android:label="@string/title_activity_confirm" >
         </activity>
     </application>
 

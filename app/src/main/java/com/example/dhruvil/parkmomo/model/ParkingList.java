@@ -12,9 +12,6 @@ public class ParkingList {
     @SerializedName("CampaignArtworks")
     public CampaignArtworks CampaignArtworks;
 
-
-
-
     @SerializedName("CampaignDetails")
     public CampaignDetails CampaignDetails;
 

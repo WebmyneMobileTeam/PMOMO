@@ -92,7 +92,7 @@ public class OfferlistActivity extends ActionBarActivity {
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView, ViewGroup parent) {
 
             View rowView = convertView;
             ViewHolder viewHolder;
@@ -124,6 +124,7 @@ public class OfferlistActivity extends ActionBarActivity {
             rowView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    PrefUtils.setSingleOffer(parkingList.get(position),OfferlistActivity.this);
                     Intent i = new Intent(OfferlistActivity.this, OfferDetailActivity.class);
                     startActivity(i);
                 }
