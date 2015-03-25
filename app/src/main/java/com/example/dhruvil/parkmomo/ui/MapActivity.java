@@ -146,7 +146,12 @@ public class MapActivity extends ActionBarActivity implements GoogleMap.OnMapCli
                                 } else if(isEmptyField(longitude)){
                                         Toast.makeText(MapActivity.this,"Please Enter Longitude",Toast.LENGTH_LONG).show();
                                 } else {
-                                        proessFetchOfferList(latitude.getText().toString(),longitude.getText().toString());
+                                        Intent i = new Intent(MapActivity.this, ConfirmActivity.class);
+                                        i.putExtra("latitude",latitude.getText().toString());
+                                        i.putExtra("longitude",longitude.getText().toString());
+                                        startActivity(i);
+
+
                                 }
 
                         }
@@ -566,41 +571,6 @@ public class MapActivity extends ActionBarActivity implements GoogleMap.OnMapCli
         }
 
 
-        private void proessFetchOfferList(String latitudeValue,String longitudeValue){
-                try{
 
-                        pd = ProgressDialog.show(MapActivity.this, "Please Wait", "Loading..", true, false);
-                        pd.show();
-
-                        new CallWebService(AppConstants.OFFER_LIST +latitudeValue+"/"+longitudeValue,CallWebService.TYPE_JSONOBJECT){
-
-                                @Override
-                                public void response(String response) {
-                                        Log.e("offer list response",response);
-
-                                        Offer offerlist = new GsonBuilder().create().fromJson(response,Offer.class);
-                                        parkingLists=offerlist.Parkinglst;
-                                        pd.dismiss();
-                                        PrefUtils.setOffers(offerlist, MapActivity.this);
-                                        Intent i = new Intent(MapActivity.this, ConfirmActivity.class);
-                                        startActivity(i);
-
-
-
-
-
-                                }
-
-                                @Override
-                                public void error(VolleyError error) {
-                                        Log.e("exc in volly",error.toString());
-                                        pd.dismiss();
-                                }
-                        }.start();
-
-                }catch (Exception e1){
-                        Log.e("exception", e1.toString());
-                }
-        }
 
 }
