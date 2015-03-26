@@ -18,4 +18,7 @@ public class ParkingList {
     @SerializedName("CampaignLocations")
     public CampaignLocations CampaignLocations;
 
+    @SerializedName("QRcode")
+    public QRcode qRcode;
+
 }

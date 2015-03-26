@@ -30,6 +30,7 @@ import com.example.dhruvil.parkmomo.R;
 import com.example.dhruvil.parkmomo.helpers.AppConstants;
 import com.example.dhruvil.parkmomo.helpers.CallWebService;
 import com.example.dhruvil.parkmomo.helpers.PrefUtils;
+import com.example.dhruvil.parkmomo.model.Latitudelongitude;
 import com.example.dhruvil.parkmomo.model.Offer;
 import com.example.dhruvil.parkmomo.model.ParkingList;
 import com.google.android.gms.common.ConnectionResult;
@@ -95,6 +96,8 @@ public class MapActivity extends ActionBarActivity implements GoogleMap.OnMapCli
         private ProgressDialog pd;
         private ArrayList<ParkingList> parkingLists;
 
+        private String currentLatitude,currentLongitude;
+
         @Override
         protected void onCreate(Bundle savedInstanceState) {
                 super.onCreate(savedInstanceState);
@@ -146,9 +149,10 @@ public class MapActivity extends ActionBarActivity implements GoogleMap.OnMapCli
                                 } else if(isEmptyField(longitude)){
                                         Toast.makeText(MapActivity.this,"Please Enter Longitude",Toast.LENGTH_LONG).show();
                                 } else {
+                                        PrefUtils.setLatLng(new Latitudelongitude("51.56812","-0.01366"), MapActivity.this);
+//                                        PrefUtils.setLatLng(new Latitudelongitude(currentLatitude,currentLongitude), MapActivity.this);
                                         Intent i = new Intent(MapActivity.this, ConfirmActivity.class);
-                                        i.putExtra("latitude",latitude.getText().toString());
-                                        i.putExtra("longitude",longitude.getText().toString());
+
                                         startActivity(i);
 
 
@@ -256,6 +260,11 @@ public class MapActivity extends ActionBarActivity implements GoogleMap.OnMapCli
                         LatLng latLong = new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude());
                         if (count == 0) {
 
+
+                                currentLatitude=mCurrentLocation.getLatitude()+"";
+                                currentLongitude=mCurrentLocation.getLongitude()+"";
+
+
                                 map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLong, 10));
                                 map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
                                 if (marker != null) {
@@ -352,6 +361,8 @@ public class MapActivity extends ActionBarActivity implements GoogleMap.OnMapCli
                 if (marker != null) {
                         marker.remove();
                 }
+                currentLatitude=latLng.latitude+"";
+                currentLongitude=latLng.longitude+"";
                 marker = map.addMarker(new MarkerOptions()
                         .position(latLng)
                         .draggable(true)

@@ -113,7 +113,7 @@ public class OfferlistActivity extends ActionBarActivity {
                 viewHolder = (ViewHolder) convertView.getTag();
             }
 
-            Log.e("image path",AppConstants.IMAGE_PATH + parkingList.get(position).CampaignArtworks.ImageArt+"");
+//            Log.e("image path",AppConstants.IMAGE_PATH + parkingList.get(position).CampaignArtworks.ImageArt+"");
             viewHolder.text.setText(parkingList.get(position).CampaignDetails.CampaignTitle);
             viewHolder.description.setText(parkingList.get(position).CampaignDetails.CampaignDescription);
             Glide.with(OfferlistActivity.this)

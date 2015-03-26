@@ -25,24 +25,37 @@ import java.util.ArrayList;
 
 public class ConfirmActivity extends ActionBarActivity {
     private ArrayList<ParkingList> parkingLists;
-    private TextView freePark;
+    private TextView freePark,phonePark;
     private ProgressDialog pd;
-    private double latitude,longitude;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_confirm);
 
         freePark= (TextView) findViewById(R.id.freePark);
-        Intent i=getIntent();
-        latitude=Double.parseDouble(i.getStringExtra("latitude"));
-        longitude=Double.parseDouble(i.getStringExtra("longitude"));
+        phonePark= (TextView) findViewById(R.id.phonePark);
+        phonePark.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(ConfirmActivity.this);
+
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.setMessage("Let us pay for your parking next time!");
+                dialog.show();
+            }
+        });
         freePark.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
 
-                proessFetchOfferList(latitude+"",longitude+"");
+                proessFetchOfferList(PrefUtils.getLatLng(ConfirmActivity.this).latitude+"",PrefUtils.getLatLng(ConfirmActivity.this).longitude+"");
 
             }
         });

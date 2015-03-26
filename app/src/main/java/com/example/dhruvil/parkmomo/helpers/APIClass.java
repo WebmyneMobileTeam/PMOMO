@@ -44,11 +44,11 @@ public abstract class APIClass implements IService2 {
             public void onResponse(JSONObject jobj) {
 
                 try{
-                    if(jobj.getString("ResponseCode").equalsIgnoreCase("SUCCESS")){
+//                    if(jobj.getString("ResponseCode").equalsIgnoreCase("SUCCESS")){
                         response(jobj.toString());
-                    }else{
-                        error(jobj.getString("ResponseMsg"));
-                    }
+//                    }else{
+//                        error(jobj.getString("ResponseMsg"));
+//                    }
                 }catch(Exception e){
                     e.printStackTrace();
                 }

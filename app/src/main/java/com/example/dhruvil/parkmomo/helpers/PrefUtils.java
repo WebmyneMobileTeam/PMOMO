@@ -3,9 +3,11 @@ package com.example.dhruvil.parkmomo.helpers;
 import android.content.Context;
 import android.graphics.Typeface;
 
+import com.example.dhruvil.parkmomo.model.Latitudelongitude;
 import com.example.dhruvil.parkmomo.model.Offer;
 import com.example.dhruvil.parkmomo.model.ParkingList;
 import com.example.dhruvil.parkmomo.model.User;
+import com.google.android.gms.maps.model.LatLng;
 
 /**
  * Created by xitij on 17-03-2015.
@@ -72,6 +74,20 @@ public class PrefUtils {
         return  typeface;
     }
 
+
+    public static void setLatLng(Latitudelongitude latLng, Context ctx){
+
+        ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(ctx, "latlng_pref", 0);
+        complexPreferences.putObject("current_latlng", latLng);
+        complexPreferences.commit();
+
+    }
+
+    public static Latitudelongitude getLatLng(Context ctx){
+        ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(ctx, "latlng_pref", 0);
+        Latitudelongitude user = complexPreferences.getObject("current_latlng", Latitudelongitude.class);
+        return user;
+    }
 
 
 }
