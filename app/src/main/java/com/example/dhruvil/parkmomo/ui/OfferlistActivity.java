@@ -126,6 +126,7 @@ public class OfferlistActivity extends ActionBarActivity {
                 @Override
                 public void onClick(View v) {
                     PrefUtils.setSingleOffer(parkingList.get(position),OfferlistActivity.this);
+                    PrefUtils.setValidatedOffer(false, OfferlistActivity.this);
                     Intent i = new Intent(OfferlistActivity.this, OfferDetailActivity.class);
                     startActivity(i);
                 }

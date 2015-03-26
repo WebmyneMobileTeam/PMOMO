@@ -30,7 +30,10 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
 		Intent notificationIntent = new Intent(context, MapActivity.class);
 		PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
 		notification.setLatestEventInfo(context, NotificationTitle, NotificationContent, contentIntent);
-		notification.flags |= Notification.FLAG_ONGOING_EVENT;
+		notification.flags |= Notification.FLAG_AUTO_CANCEL;
+
 		myNotificationManager.notify(NOTIFICATION_ID, notification);
+
+
 	}
 }

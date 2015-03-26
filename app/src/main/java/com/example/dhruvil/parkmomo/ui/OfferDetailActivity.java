@@ -33,49 +33,31 @@ public class OfferDetailActivity extends ActionBarActivity {
     private TextView verify;
     private TextView title,address,description;
     private CircularImageView categoryImage;
-    public static AlarmManager alarmMgr;
-    public static PendingIntent alarmIntent;
-    boolean fromScan=false;
     ParkingList parkingList;
     UserClass user;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_offer_detail);
-        verify= (TextView) findViewById(R.id.verify);
-        alarmMgr = (AlarmManager)getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(getApplicationContext(), MyBroadcastReceiver.class);
-
-        Intent scanIntent=getIntent();
-        fromScan=scanIntent.getBooleanExtra("from_scanner", false);
-        if(fromScan==true){
-            verify.setText("VERIFIED");
-            verify.setBackgroundColor(getResources().getColor(R.color.green));
-            verify.setClickable(false);
-            verify.setEnabled(false);
-            validatedQRCode();
-        } else {
-            verify.setEnabled(true);
-            verify.setClickable(true);
-            verify.setText("VERIFY QR CODE");
-        }
-        alarmIntent = PendingIntent.getBroadcast(getApplicationContext(), 20000000, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        alarmMgr.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 30000,
-                alarmIntent);
 
         parkingList=PrefUtils.getSingleOffer(OfferDetailActivity.this);
         user=PrefUtils.getCurrentUser(OfferDetailActivity.this);
 
+        //find views
+        verify= (TextView) findViewById(R.id.verify);
         txtSecond= (TextView) findViewById(R.id.txtSecond);
         txtMinute= (TextView) findViewById(R.id.txtMinute);
         txtHour= (TextView) findViewById(R.id.txtHour);
-
         categoryImage=(CircularImageView) findViewById(R.id.categoryImage);
         title= (TextView) findViewById(R.id.title);
         address= (TextView) findViewById(R.id.address);
         description= (TextView) findViewById(R.id.description);
+
+        //set values
         Glide.with(OfferDetailActivity.this)
                 .load(AppConstants.IMAGE_PATH + parkingList.CampaignArtworks.ImageArt)
                 .placeholder(R.drawable.logo)
@@ -85,14 +67,11 @@ public class OfferDetailActivity extends ActionBarActivity {
         title.setText(parkingList.CampaignDetails.CampaignTitle);
         address.setText("( "+parkingList.CampaignLocations.Address+" )");
         description.setText(parkingList.CampaignDetails.CampaignDescription);
+
+
         verify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//
-//                Dialog dialog = new Dialog(OfferDetailActivity.this, android.R.style.Theme_Light);
-//                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-//                dialog.setContentView(R.layout.activity_offer_scan);
-//                dialog.show();
 
                 Intent i = new Intent(OfferDetailActivity.this, OfferScanActivity.class);
                 startActivity(i);
@@ -110,8 +89,45 @@ public class OfferDetailActivity extends ActionBarActivity {
             }
         }.start();
         makeOneImpression();
+        showFirstNotification();
+        showSecondNotification();
+
     }
 
+
+    private void showFirstNotification(){// five minutes
+        AlarmManager alarmMgr;
+        PendingIntent alarmIntent;
+        alarmMgr = (AlarmManager)getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(getApplicationContext(), MyBroadcastReceiver.class);
+        alarmIntent = PendingIntent.getBroadcast(getApplicationContext(), 20000000, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        alarmMgr.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 300000,
+                alarmIntent);
+    }
+
+    private void showSecondNotification(){// ten minutes
+         AlarmManager alarmMgr;
+        PendingIntent alarmIntent;
+        alarmMgr = (AlarmManager)getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(getApplicationContext(), MyBroadcastReceiver.class);
+        alarmIntent = PendingIntent.getBroadcast(getApplicationContext(), 30000000, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        alarmMgr.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 600000,
+                alarmIntent);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(PrefUtils.getValidatedOffer(OfferDetailActivity.this)){
+            verify.setText("VERIFYING...");
+            validatedQRCode();
+
+        } else {
+            verify.setEnabled(true);
+            verify.setClickable(true);
+            verify.setText("VERIFY QR CODE");
+        }
+    }
 
     private void validatedQRCode() {
         SaveUserOffer saveUserOffer=PrefUtils.getSaveUserOffer(OfferDetailActivity.this);
@@ -144,7 +160,20 @@ public class OfferDetailActivity extends ActionBarActivity {
             @Override
             public void response(String response) {
 //                Toast.makeText(OfferDetailActivity.this,response,Toast.LENGTH_LONG).show();
-                Log.e("response", response+"");
+                SaveUserOffer saveUserOffer = new GsonBuilder().create().fromJson(response, SaveUserOffer.class);
+                Log.e("response", response + "");
+                if(saveUserOffer.ResponseCode.equalsIgnoreCase("SUCCESS")){
+                    verify.setText("VERIFIED");
+                    verify.setBackgroundColor(getResources().getColor(R.color.green));
+                    verify.setClickable(false);
+                    verify.setEnabled(false);
+
+                } else {
+                    verify.setEnabled(true);
+                    verify.setClickable(true);
+                    verify.setText("VERIFY QR CODE");
+                    Toast.makeText(OfferDetailActivity.this,saveUserOffer.ResponseMsg,Toast.LENGTH_LONG).show();
+                }
             }
 
             @Override
@@ -202,6 +231,6 @@ public class OfferDetailActivity extends ActionBarActivity {
 
     @Override
     public void onBackPressed() {
-
+        super.onBackPressed();
     }
 }

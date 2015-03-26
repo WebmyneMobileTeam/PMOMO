@@ -20,4 +20,6 @@ public class SaveUserOffer {
     @SerializedName("offerUser")
     public OfferUser offerUser;
 
+
+
 }

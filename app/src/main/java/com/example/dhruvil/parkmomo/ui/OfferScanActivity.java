@@ -16,6 +16,7 @@ import com.example.dhruvil.parkmomo.R;
 import com.example.dhruvil.parkmomo.custom_components.CameraPreview;
 import com.example.dhruvil.parkmomo.helpers.PrefUtils;
 import com.example.dhruvil.parkmomo.model.ParkingList;
+import com.example.dhruvil.parkmomo.model.SaveUserOffer;
 import com.google.android.gms.ads.AdView;
 
 import net.sourceforge.zbar.Config;
@@ -97,9 +98,7 @@ public class OfferScanActivity extends ActionBarActivity {
                 for (Symbol sym : syms) {
                     tapText.setVisibility(View.VISIBLE);
                     if(PrefUtils.getSingleOffer(OfferScanActivity.this).qRcode.QRMetadata.equalsIgnoreCase(sym.getData().toString())){
-                        Intent i = new Intent(OfferScanActivity.this, OfferDetailActivity.class);
-                        i.putExtra("from_scanner",true);
-                        startActivity(i);
+                        PrefUtils.setValidatedOffer(true,OfferScanActivity.this);
                         finish();
                     } else {
                         Toast.makeText(OfferScanActivity.this,"Invalid QR Code",Toast.LENGTH_LONG).show();

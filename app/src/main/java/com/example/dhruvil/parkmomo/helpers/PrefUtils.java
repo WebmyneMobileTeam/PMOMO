@@ -120,4 +120,18 @@ public class PrefUtils {
     }
 
 
+    public static void setValidatedOffer(boolean isValidated, Context ctx){
+
+        SharedPreferences  preferences = PreferenceManager.getDefaultSharedPreferences(ctx);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean("isValidated", isValidated);
+        editor.commit();
+
+    }
+
+    public static boolean getValidatedOffer(Context ctx){
+        SharedPreferences  preferences = PreferenceManager.getDefaultSharedPreferences(ctx);
+        boolean isValidated=preferences.getBoolean("isValidated", false);
+        return  isValidated;
+    }
 }

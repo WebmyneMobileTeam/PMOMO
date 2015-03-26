@@ -146,8 +146,8 @@ public class MapActivity extends ActionBarActivity implements GoogleMap.OnMapCli
                         @Override
                         public void onClick(View v) {
 
-                                        PrefUtils.setLatLng(new Latitudelongitude("51.56812","-0.01366"), MapActivity.this);
-//                                        PrefUtils.setLatLng(new Latitudelongitude(currentLatitude,currentLongitude), MapActivity.this);
+//                                        PrefUtils.setLatLng(new Latitudelongitude("51.56812","-0.01366"), MapActivity.this);
+                                        PrefUtils.setLatLng(new Latitudelongitude(currentLatitude,currentLongitude), MapActivity.this);
                                         Intent i = new Intent(MapActivity.this, ConfirmActivity.class);
 
                                         startActivity(i);
