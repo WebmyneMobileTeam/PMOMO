@@ -26,6 +26,7 @@ import com.example.dhruvil.parkmomo.model.ParkingList;
 import com.google.gson.GsonBuilder;
 
 import android.util.Log;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +43,7 @@ public class OfferlistActivity extends ActionBarActivity {
         setContentView(R.layout.activity_offer_list);
         
         listHomeProducts = (ListView) findViewById(R.id.listHomeProducts);
-
+        Toast.makeText(OfferlistActivity.this,PrefUtils.getCurrentUser(OfferlistActivity.this).userID+" ",Toast.LENGTH_LONG).show();
         
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);

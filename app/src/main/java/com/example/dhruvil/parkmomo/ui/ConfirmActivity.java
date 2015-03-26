@@ -74,7 +74,7 @@ public class ConfirmActivity extends ActionBarActivity {
 
                 @Override
                 public void response(String response) {
-                    Log.e("offer list response", response);
+//                    Log.e("offer list response", response);
 
                     Offer offerlist = new GsonBuilder().create().fromJson(response,Offer.class);
                     parkingLists=offerlist.Parkinglst;

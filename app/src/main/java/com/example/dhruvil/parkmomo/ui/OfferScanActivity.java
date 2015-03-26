@@ -96,8 +96,12 @@ public class OfferScanActivity extends ActionBarActivity {
                 SymbolSet syms = scanner.getResults();
                 for (Symbol sym : syms) {
                     tapText.setVisibility(View.VISIBLE);
+                    if(PrefUtils.getSingleOffer(OfferScanActivity.this).qRcode.QRMetadata.equalsIgnoreCase(sym.getData().toString())){
+                        Toast.makeText(OfferScanActivity.this,"valid",Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(OfferScanActivity.this,"invalid",Toast.LENGTH_LONG).show();
+                    }
 
-                    Toast.makeText(OfferScanActivity.this,sym.getData().toString()+" ",Toast.LENGTH_LONG).show();
 
                     barcodeScanned = true;
                 }

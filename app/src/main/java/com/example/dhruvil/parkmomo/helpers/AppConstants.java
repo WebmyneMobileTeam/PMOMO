@@ -17,8 +17,6 @@ public class AppConstants {
     public static int EXPIRED=4;
     public static int RESCHEDULED=5;
 
-
-
 }
 
 

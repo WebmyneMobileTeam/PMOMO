@@ -39,7 +39,7 @@ public class LauncherActivity extends ActionBarActivity implements View.OnClickL
         setContentView(R.layout.activity_launcher);
         init();
 
-        if(Prefs.with(LauncherActivity.this).getBoolean("isLogin",false)){
+        if(PrefUtils.getLogin(LauncherActivity.this)==true){
             Intent intentMap = new Intent(LauncherActivity.this,MapActivity.class);
             startActivity(intentMap);
             finish();
@@ -119,8 +119,9 @@ public class LauncherActivity extends ActionBarActivity implements View.OnClickL
 
                 Log.e("Response Login", response);
                 User currentUser = new GsonBuilder().create().fromJson(response, User.class);
-                PrefUtils.setCurrentUser(currentUser,LauncherActivity.this);
-                Prefs.with(LauncherActivity.this).save("isLogin",true);
+                PrefUtils.setLogin(true,LauncherActivity.this);
+                PrefUtils.setCurrentUser(currentUser, LauncherActivity.this);
+
                 Intent iMap = new Intent(LauncherActivity.this,MapActivity.class);
                 startActivity(iMap);
                 finish();

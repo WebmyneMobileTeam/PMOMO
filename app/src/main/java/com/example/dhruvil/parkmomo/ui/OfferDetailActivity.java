@@ -33,8 +33,7 @@ public class OfferDetailActivity extends ActionBarActivity {
     private TextView title,address,description;
     private CircularImageView categoryImage;
 
-    JSONObject offerUser;
-    JSONObject jsonObject;
+
     ParkingList parkingList;
     User user;
 
@@ -43,8 +42,10 @@ public class OfferDetailActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_offer_detail);
-        makeOneImpression();
+
         parkingList=PrefUtils.getSingleOffer(OfferDetailActivity.this);
+        user=PrefUtils.getCurrentUser(OfferDetailActivity.this);
+
         txtSecond= (TextView) findViewById(R.id.txtSecond);
         txtMinute= (TextView) findViewById(R.id.txtMinute);
         txtHour= (TextView) findViewById(R.id.txtHour);
@@ -80,22 +81,24 @@ public class OfferDetailActivity extends ActionBarActivity {
 
             }
         }.start();
+        makeOneImpression();
     }
 
     private void makeOneImpression() {
-        parkingList=PrefUtils.getSingleOffer(OfferDetailActivity.this);
-        user=PrefUtils.getCurrentUser(OfferDetailActivity.this);
 
-        offerUser=new JSONObject();
-        jsonObject=new JSONObject();
+
+
+        JSONObject offerUser=null;
+        JSONObject jsonObject=null;
         try {
+            offerUser=new JSONObject();
             offerUser.put("CampaignId", parkingList.CampaignDetails.CampaignId);
             offerUser.put("CustomerId", user.userID);
             offerUser.put("QRCodeMetaString", parkingList.qRcode.QRMetadata+"");
             offerUser.put("OfferUserId", 0);
             offerUser.put("VehicleId", "123456");
 
-
+            jsonObject=new JSONObject();
             jsonObject.put("Latitide", PrefUtils.getLatLng(OfferDetailActivity.this).latitude+"");
             jsonObject.put("Longitude", PrefUtils.getLatLng(OfferDetailActivity.this).longitude+"");
             jsonObject.put("StatusTypeValueId", AppConstants.OPEN);
@@ -103,19 +106,17 @@ public class OfferDetailActivity extends ActionBarActivity {
             jsonObject.put("ResponseMsg", "");
             jsonObject.put("ResponseCode", "");
             Log.e("jsonObject", jsonObject + "");
+            Toast.makeText(OfferDetailActivity.this,jsonObject+"",Toast.LENGTH_LONG).show();
 
         }catch (Exception e){
             e.printStackTrace();
         }
 
-
-        Toast.makeText(OfferDetailActivity.this,jsonObject+"",Toast.LENGTH_LONG).show();
-
         new APIClass(AppConstants.SAVE_OFFER,jsonObject){
 
             @Override
             public void response(String response) {
-                Log.e("jsonObject",jsonObject+"");
+                Toast.makeText(OfferDetailActivity.this,response+"",Toast.LENGTH_LONG).show();
                 Log.e("response", response+"");
             }
 

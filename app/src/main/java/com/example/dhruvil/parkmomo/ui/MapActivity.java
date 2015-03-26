@@ -144,11 +144,7 @@ public class MapActivity extends ActionBarActivity implements GoogleMap.OnMapCli
                 seeOfferes.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                                if(isEmptyField(latitude)){
-                                        Toast.makeText(MapActivity.this,"Please Enter Latitude",Toast.LENGTH_LONG).show();
-                                } else if(isEmptyField(longitude)){
-                                        Toast.makeText(MapActivity.this,"Please Enter Longitude",Toast.LENGTH_LONG).show();
-                                } else {
+
                                         PrefUtils.setLatLng(new Latitudelongitude("51.56812","-0.01366"), MapActivity.this);
 //                                        PrefUtils.setLatLng(new Latitudelongitude(currentLatitude,currentLongitude), MapActivity.this);
                                         Intent i = new Intent(MapActivity.this, ConfirmActivity.class);
@@ -156,7 +152,7 @@ public class MapActivity extends ActionBarActivity implements GoogleMap.OnMapCli
                                         startActivity(i);
 
 
-                                }
+
 
                         }
                 });

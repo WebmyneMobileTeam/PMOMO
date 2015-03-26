@@ -1,7 +1,9 @@
 package com.example.dhruvil.parkmomo.helpers;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
+import android.preference.PreferenceManager;
 
 import com.example.dhruvil.parkmomo.model.Latitudelongitude;
 import com.example.dhruvil.parkmomo.model.Offer;
@@ -55,18 +57,17 @@ public class PrefUtils {
         return offer;
     }
 
-    public static void setCurrentUser(User user, Context ctx){
+    public static void setCurrentUser(User currentUser, Context ctx){
 
-        ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(ctx, "user_pref", 0);
-        complexPreferences.putObject("current_user", user);
+        ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(ctx, "user_prefs", 0);
+        complexPreferences.putObject("current_user_value", currentUser);
         complexPreferences.commit();
-
     }
 
     public static User getCurrentUser(Context ctx){
-        ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(ctx, "user_pref", 0);
-        User user = complexPreferences.getObject("current_user", User.class);
-        return user;
+        ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(ctx, "user_prefs", 0);
+        User currentUser = complexPreferences.getObject("current_user_value", User.class);
+        return currentUser;
     }
 
     public static Typeface getTypeFace(Context ctx){
@@ -85,8 +86,23 @@ public class PrefUtils {
 
     public static Latitudelongitude getLatLng(Context ctx){
         ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(ctx, "latlng_pref", 0);
-        Latitudelongitude user = complexPreferences.getObject("current_latlng", Latitudelongitude.class);
-        return user;
+        Latitudelongitude latlong = complexPreferences.getObject("current_latlng", Latitudelongitude.class);
+        return latlong;
+    }
+
+    public static void setLogin(boolean login, Context ctx){
+
+        SharedPreferences  preferences = PreferenceManager.getDefaultSharedPreferences(ctx);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean("isLogin",login);
+        editor.commit();
+
+    }
+
+    public static boolean getLogin(Context ctx){
+        SharedPreferences  preferences = PreferenceManager.getDefaultSharedPreferences(ctx);
+        boolean login=preferences.getBoolean("isLogin",false);
+        return  login;
     }
 
 
