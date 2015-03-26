@@ -103,6 +103,7 @@ public class MapActivity extends ActionBarActivity implements GoogleMap.OnMapCli
                 super.onCreate(savedInstanceState);
                 setContentView(R.layout.activity_map);
                 mLastUpdateTime = "";
+
                 latitude = (EditText) findViewById(R.id.latitude);
                 longitude = (EditText) findViewById(R.id.longitude);
                 address = (AutoCompleteTextView) findViewById(R.id.address);

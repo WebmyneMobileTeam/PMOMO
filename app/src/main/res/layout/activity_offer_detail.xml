@@ -111,9 +111,17 @@
 
         </LinearLayout>
 
-
+<TextView
+    android:textSize="14sp"
+    android:textColor="#aaffffff"
+    android:layout_marginTop="8dp"
+    android:gravity="center"
+    android:layout_width="match_parent"
+    android:text="Time remaining for merchant validation."
+    android:layout_height="wrap_content" />
 
     </LinearLayout>
+
 
     <RelativeLayout
         android:layout_marginTop="8dp"

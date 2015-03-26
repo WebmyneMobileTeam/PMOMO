@@ -97,9 +97,12 @@ public class OfferScanActivity extends ActionBarActivity {
                 for (Symbol sym : syms) {
                     tapText.setVisibility(View.VISIBLE);
                     if(PrefUtils.getSingleOffer(OfferScanActivity.this).qRcode.QRMetadata.equalsIgnoreCase(sym.getData().toString())){
-                        Toast.makeText(OfferScanActivity.this,"valid",Toast.LENGTH_LONG).show();
+                        Intent i = new Intent(OfferScanActivity.this, OfferDetailActivity.class);
+                        i.putExtra("from_scanner",true);
+                        startActivity(i);
+                        finish();
                     } else {
-                        Toast.makeText(OfferScanActivity.this,"invalid",Toast.LENGTH_LONG).show();
+                        Toast.makeText(OfferScanActivity.this,"Invalid QR Code",Toast.LENGTH_LONG).show();
                     }
 
 

@@ -6,21 +6,16 @@ import android.graphics.Typeface;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.android.volley.VolleyError;
 import com.example.dhruvil.parkmomo.R;
 import com.example.dhruvil.parkmomo.helpers.APIClass;
 import com.example.dhruvil.parkmomo.helpers.AppConstants;
-import com.example.dhruvil.parkmomo.helpers.ComplexPreferences;
 import com.example.dhruvil.parkmomo.helpers.PrefUtils;
-import com.example.dhruvil.parkmomo.helpers.Prefs;
-import com.example.dhruvil.parkmomo.model.User;
+import com.example.dhruvil.parkmomo.model.UserClass;
 import com.google.gson.GsonBuilder;
 
 import org.json.JSONObject;
@@ -118,7 +113,7 @@ public class LauncherActivity extends ActionBarActivity implements View.OnClickL
                 pd.dismiss();
 
                 Log.e("Response Login", response);
-                User currentUser = new GsonBuilder().create().fromJson(response, User.class);
+                UserClass currentUser = new GsonBuilder().create().fromJson(response, UserClass.class);
                 PrefUtils.setLogin(true,LauncherActivity.this);
                 PrefUtils.setCurrentUser(currentUser, LauncherActivity.this);
 

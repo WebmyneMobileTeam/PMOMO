@@ -43,7 +43,7 @@ public class OfferlistActivity extends ActionBarActivity {
         setContentView(R.layout.activity_offer_list);
         
         listHomeProducts = (ListView) findViewById(R.id.listHomeProducts);
-        Toast.makeText(OfferlistActivity.this,PrefUtils.getCurrentUser(OfferlistActivity.this).userID+" ",Toast.LENGTH_LONG).show();
+
         
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);

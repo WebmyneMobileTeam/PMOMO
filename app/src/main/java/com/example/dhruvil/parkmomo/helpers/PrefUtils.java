@@ -8,8 +8,8 @@ import android.preference.PreferenceManager;
 import com.example.dhruvil.parkmomo.model.Latitudelongitude;
 import com.example.dhruvil.parkmomo.model.Offer;
 import com.example.dhruvil.parkmomo.model.ParkingList;
-import com.example.dhruvil.parkmomo.model.User;
-import com.google.android.gms.maps.model.LatLng;
+import com.example.dhruvil.parkmomo.model.SaveUserOffer;
+import com.example.dhruvil.parkmomo.model.UserClass;
 
 /**
  * Created by xitij on 17-03-2015.
@@ -57,16 +57,16 @@ public class PrefUtils {
         return offer;
     }
 
-    public static void setCurrentUser(User currentUser, Context ctx){
+    public static void setCurrentUser(UserClass currentUser, Context ctx){
 
         ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(ctx, "user_prefs", 0);
         complexPreferences.putObject("current_user_value", currentUser);
         complexPreferences.commit();
     }
 
-    public static User getCurrentUser(Context ctx){
+    public static UserClass getCurrentUser(Context ctx){
         ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(ctx, "user_prefs", 0);
-        User currentUser = complexPreferences.getObject("current_user_value", User.class);
+        UserClass currentUser = complexPreferences.getObject("current_user_value", UserClass.class);
         return currentUser;
     }
 
@@ -94,15 +94,29 @@ public class PrefUtils {
 
         SharedPreferences  preferences = PreferenceManager.getDefaultSharedPreferences(ctx);
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putBoolean("isLogin",login);
+        editor.putBoolean("isLogin", login);
         editor.commit();
 
     }
 
     public static boolean getLogin(Context ctx){
         SharedPreferences  preferences = PreferenceManager.getDefaultSharedPreferences(ctx);
-        boolean login=preferences.getBoolean("isLogin",false);
+        boolean login=preferences.getBoolean("isLogin", false);
         return  login;
+    }
+
+
+    public static void setSaveUserOffer(SaveUserOffer userOffer, Context ctx){
+
+        ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(ctx, "save_user_offer", 0);
+        complexPreferences.putObject("save_user_offer_value", userOffer);
+        complexPreferences.commit();
+    }
+
+    public static SaveUserOffer getSaveUserOffer(Context ctx){
+        ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(ctx, "save_user_offer", 0);
+        SaveUserOffer userOffer = complexPreferences.getObject("save_user_offer_value", SaveUserOffer.class);
+        return userOffer;
     }
 
 
