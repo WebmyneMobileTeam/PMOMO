@@ -20,19 +20,30 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
 	@Override
 	public void onReceive(Context context, final Intent intent) {
 		this.context=context;
+		Bundle bundle = intent.getExtras();
+		String minutes=bundle.getString("minutes","");
 		myNotificationManager = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
 
-		CharSequence NotificationTicket = "Parking App";
-		CharSequence NotificationTitle = "Merchant validation";
-		CharSequence NotificationContent = "XX time remaining for merchant validation";
+		CharSequence NotificationTicket = "Park MoMo";
+		CharSequence NotificationTitle = "Park MoMo";
+		CharSequence NotificationContent = minutes;
 
-		Notification notification = new Notification(R.drawable.logo, NotificationTicket, 0);
-		Intent notificationIntent = new Intent(context, MapActivity.class);
-		PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
-		notification.setLatestEventInfo(context, NotificationTitle, NotificationContent, contentIntent);
-		notification.flags |= Notification.FLAG_AUTO_CANCEL;
+//		Notification notification = new Notification(R.drawable.logo, NotificationTicket, 0);
+//		Intent notificationIntent = new Intent(context, MapActivity.class);
+//		PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
+//		notification.setLatestEventInfo(context, NotificationTitle, NotificationContent, contentIntent);
+//		notification.flags |= Notification.FLAG_AUTO_CANCEL;
+//		notification.setStyle(new Notification.BigTextStyle()
+//				.bigText(aVeryLongString));
+		Notification notif = new Notification.Builder(context)
+				.setContentTitle(NotificationTitle)
+				.setContentText(NotificationContent)
+				.setSmallIcon(R.drawable.logo)
 
-		myNotificationManager.notify(NOTIFICATION_ID, notification);
+				.setStyle(new Notification.BigTextStyle()
+						.bigText(NotificationContent))
+				.build();
+		myNotificationManager.notify(NOTIFICATION_ID, notif);
 
 
 	}

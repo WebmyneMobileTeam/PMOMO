@@ -100,6 +100,7 @@ public class OfferDetailActivity extends ActionBarActivity {
         PendingIntent alarmIntent;
         alarmMgr = (AlarmManager)getApplicationContext().getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(getApplicationContext(), MyBroadcastReceiver.class);
+        intent.putExtra("minutes","55 minutes remaining for merchant validation");
         alarmIntent = PendingIntent.getBroadcast(getApplicationContext(), 20000000, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         alarmMgr.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 300000,
                 alarmIntent);
@@ -110,6 +111,7 @@ public class OfferDetailActivity extends ActionBarActivity {
         PendingIntent alarmIntent;
         alarmMgr = (AlarmManager)getApplicationContext().getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(getApplicationContext(), MyBroadcastReceiver.class);
+        intent.putExtra("minutes","your parking session will end in  10 Minutes. would you like to broadcast?");
         alarmIntent = PendingIntent.getBroadcast(getApplicationContext(), 30000000, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         alarmMgr.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 600000,
                 alarmIntent);
@@ -231,6 +233,6 @@ public class OfferDetailActivity extends ActionBarActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+//        super.onBackPressed();
     }
 }
