@@ -1,9 +1,11 @@
 package com.example.dhruvil.parkmomo.ui;
 
 import android.app.AlarmManager;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.CountDownTimer;
 import android.support.v7.app.ActionBarActivity;
@@ -77,7 +79,8 @@ public class OfferDetailActivity extends ActionBarActivity {
                 startActivity(i);
             }
         });
-        new CountDownTimer(3600000, 1000) {
+        //3600000
+        new CountDownTimer(120000, 1000) {
 
             public void onTick(long millisUntilFinished) {
                 txtSecond.setText(String.format("%02d", ((millisUntilFinished/1000) % 60)));
@@ -85,7 +88,19 @@ public class OfferDetailActivity extends ActionBarActivity {
                 txtHour.setText(String.format("%02d", (millisUntilFinished/1000) / 3600));
             }
             public void onFinish() {
+                AlertDialog.Builder builder = new AlertDialog.Builder(OfferDetailActivity.this);
 
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                        dialog.dismiss();
+                        finish();
+
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.setMessage("Your parking session end, Click Ok to see other offers");
+                dialog.show();
             }
         }.start();
         makeOneImpression();
@@ -121,9 +136,13 @@ public class OfferDetailActivity extends ActionBarActivity {
     protected void onResume() {
         super.onResume();
         if(PrefUtils.getValidatedOffer(OfferDetailActivity.this)){
-            verify.setText("VERIFYING...");
-            validatedQRCode();
+            if(!verify.getText().toString().equalsIgnoreCase("VERIFIED")){
 
+
+            verify.setText("VERIFYING...");
+
+            validatedQRCode();
+            }
         } else {
             verify.setEnabled(true);
             verify.setClickable(true);

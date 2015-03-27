@@ -82,7 +82,6 @@ public class MapActivity extends ActionBarActivity implements GoogleMap.OnMapCli
         private ImageView seeOfferes;
         private AutoCompleteTextView address;
         private static final String TYPE_DETAILS = "/details";
-
         private static final String LOG_TAG = "ExampleApp";
         private static final String PLACES_API_BASE = "https://maps.googleapis.com/maps/api/place";
         private static final String TYPE_AUTOCOMPLETE = "/autocomplete";
@@ -146,14 +145,11 @@ public class MapActivity extends ActionBarActivity implements GoogleMap.OnMapCli
                         @Override
                         public void onClick(View v) {
 
-//                                        PrefUtils.setLatLng(new Latitudelongitude("51.56812","-0.01366"), MapActivity.this);
-                                        PrefUtils.setLatLng(new Latitudelongitude(currentLatitude,currentLongitude), MapActivity.this);
+                                        PrefUtils.setLatLng(new Latitudelongitude("51.356762","-0.266275"), MapActivity.this);
+//                                        PrefUtils.setLatLng(new Latitudelongitude(currentLatitude,currentLongitude), MapActivity.this);
                                         Intent i = new Intent(MapActivity.this, ConfirmActivity.class);
 
                                         startActivity(i);
-
-
-
 
                         }
                 });
@@ -171,18 +167,14 @@ public class MapActivity extends ActionBarActivity implements GoogleMap.OnMapCli
 
                         @Override
                         protected Void doInBackground(Void... voids) {
-
                                 latLng = getLatLng(place_ids.get(position));
-
                                 return null;
                         }
 
                         @Override
                         protected void onPostExecute(Void aVoid) {
                                 super.onPostExecute(aVoid);
-
                                 //  Toast.makeText(getActivity(),ll.latitude+"    :   "+ll.longitude, Toast.LENGTH_SHORT).show();
-
                                 if (marker != null) {
                                         marker.remove();
                                 }
@@ -193,28 +185,33 @@ public class MapActivity extends ActionBarActivity implements GoogleMap.OnMapCli
                                 latitude.setText(latLng.latitude + "");
                                 longitude.setText(latLng.longitude + "");
                                 map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
-
-
                         }
                 }.execute();
         }
 
 
         private void updateValuesFromBundle(Bundle savedInstanceState) {
+
                 Log.i(TAG, "Updating values from bundle");
+
                 if (savedInstanceState != null) {
 
                         if (savedInstanceState.keySet().contains(LOCATION_KEY)) {
                                 mCurrentLocation = savedInstanceState.getParcelable(LOCATION_KEY);
                         }
+
                         if (savedInstanceState.keySet().contains(LAST_UPDATED_TIME_STRING_KEY)) {
                                 mLastUpdateTime = savedInstanceState.getString(LAST_UPDATED_TIME_STRING_KEY);
                         }
+
                         updateUI();
+
                 }
+
         }
 
         protected synchronized void buildGoogleApiClient() {
+
                 Log.i(TAG, "Building GoogleApiClient");
                 mGoogleApiClient = new GoogleApiClient.Builder(this)
                         .addConnectionCallbacks(this)
@@ -222,13 +219,16 @@ public class MapActivity extends ActionBarActivity implements GoogleMap.OnMapCli
                         .addApi(LocationServices.API)
                         .build();
                 createLocationRequest();
+
         }
 
         protected void createLocationRequest() {
+
                 mLocationRequest = new LocationRequest();
                 mLocationRequest.setInterval(UPDATE_INTERVAL_IN_MILLISECONDS);
                 mLocationRequest.setFastestInterval(FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS);
                 mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
         }
 
         public void startUpdatesButtonHandler(View view) {
